@@ -1,13 +1,12 @@
-"use client"
+"use client";
 
-import { X, Check, Loader2 } from "lucide-react"
-import { Button } from "@/components/button"
-import { Progress } from "@/components/progress"
+import { X, Check, Loader2 } from "lucide-react";
+import { Button } from "@/components/button";
+import { Progress } from "@/components/progress";
 
 interface MediaPreviewProps {
   file: File;
   preview: string;
-  fileType: "image" | "video";
   uploading: boolean;
   analyzing: boolean;
   results: {
@@ -25,7 +24,6 @@ interface MediaPreviewProps {
 export function MediaPreview({
   file,
   preview,
-  fileType,
   uploading,
   analyzing,
   results,
@@ -37,28 +35,13 @@ export function MediaPreview({
     <div className="space-y-4">
       {/* Preview */}
       <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5">
-        {fileType === "image" && (
-          <img
-            src={preview}
-            alt="Preview"
-            className="object-contain w-full h-full"
-          />
-        )}
-        {fileType === "video" && (
-          <video
-            src={preview}
-            controls
-            className="object-contain w-full h-full"
-          />
-        )}
+        <img src={preview} alt="Preview" className="object-contain w-full h-full" />
       </div>
 
       {/* Status and Controls */}
       <div className="space-y-2">
-        {error && (
-          <div className="text-red-500 text-sm">{error}</div>
-        )}
-        
+        {error && <div className="text-red-500 text-sm">{error}</div>}
+
         {results && (
           <div className="bg-white/10 p-4 rounded-lg">
             <h3 className="font-semibold mb-2">Analysis Results:</h3>
@@ -76,7 +59,7 @@ export function MediaPreview({
           >
             {uploading ? "Uploading..." : analyzing ? "Analyzing..." : "Start Analysis"}
           </button>
-          
+
           <button
             onClick={onClear}
             className="px-4 py-2 rounded-lg bg-gray-500 hover:bg-gray-600"
@@ -88,4 +71,3 @@ export function MediaPreview({
     </div>
   );
 }
-

@@ -39,7 +39,7 @@ export default function AnalyzePage() {
 
         {/* Centered Content */}
         <motion.main
-          className="flex-1 flex items-center justify-center p-4 sm:p-24"
+          className="flex-1 flex items-center justify-center p-4 sm:p-24" // Center the MediaUploader
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -52,7 +52,7 @@ export default function AnalyzePage() {
           >
             <div className="space-y-2">
               <motion.h1
-                className="text-4xl sm:text-5 xl font-bold tracking-tight text-blue-950/90"
+                className="text-3xl sm:text-4xl font-bold tracking-tight text-blue-950/90"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
@@ -65,7 +65,7 @@ export default function AnalyzePage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                Upload your files for instant AI-powered analysis and insights.
+                Upload an image for instant AI-powered analysis and insights.
               </motion.p>
             </div>
             <MediaUploader />
@@ -77,7 +77,7 @@ export default function AnalyzePage() {
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               <h2 className="text-2xl font-bold text-blue-950/90 mb-4">Analysis Results</h2>
-              <p className="text-blue-950/90 font-space-grotesk">Upload a file to see AI-generated insights here.</p>
+              <p className="text-blue-950/90 font-space-grotesk">Upload an image to see AI-generated insights here.</p>
               {/* Results will be dynamically inserted here */}
             </motion.div>
           </motion.div>
