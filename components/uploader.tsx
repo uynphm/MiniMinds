@@ -1,11 +1,11 @@
 "use client";
 
-import type React from "react";
+import React from "react";
 import { useState, useRef } from "react";
 import { Upload, X, ImageIcon, Film, Check, Loader2 } from "lucide-react";
-import { Button } from "@/components/button";
-import { Progress } from "@/components/progress";
-import { cn } from "@/lib/cn";
+import { Button } from "../components/button";
+import { Progress } from "./progress";
+import { cn } from "../lib/cn";
 
 export function Uploader() {
   const [isDragging, setIsDragging] = useState(false);
