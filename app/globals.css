@@ -115,3 +115,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.bg-blue-custom {
+  background-color: #91BAD6;
+}
