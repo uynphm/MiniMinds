@@ -2,6 +2,7 @@
 
 import { MediaUploader } from "@/components/media-uploader"
 import { motion } from "framer-motion"
+import NavigationBar from "@/components/navigationbar"
 
 const BackgroundBubble = ({ delay = 0 }) => (
   <motion.div
@@ -34,11 +35,16 @@ const BackgroundBubble = ({ delay = 0 }) => (
 export default function AnalyzePage() {
   return (
     <motion.main
-      className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-24 bg-sky-100 overflow-hidden"
+      className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-24 bg-blue-custom overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Navigation bar */}
+      <div className="w-full absolute inset-0 overflow-hidden">
+        <NavigationBar />
+      </div>
+
       {/* Animated background bubbles */}
       {[...Array(10)].map((_, i) => (
         <BackgroundBubble key={i} delay={i * 0.2} />
