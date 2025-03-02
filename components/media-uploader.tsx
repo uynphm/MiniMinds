@@ -73,7 +73,7 @@ export function MediaUploader() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <UploadBox
         title="Analyze Video"
-        icon={<Film className="h-12 w-12" />}
+        icon={<Film className="h-12 w-12 " />}
         acceptTypes="video/*"
         onFileSelected={(file) => handleFile(file, "video")}
         glowColor="#3b82f6"
