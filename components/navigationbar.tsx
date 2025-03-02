@@ -35,7 +35,7 @@ const NavigationBar = () => {
               </li>
               <li>
                 <Link
-                  href="/app"
+                  href="/ContactPage"
                   className="text-black text-lg font-medium hover:text-blue-600 transition-colors duration-200"
                 >
                   Contact
