@@ -1,4 +1,3 @@
-from curses.ascii import HT
 import os
 import io
 from fastapi import FastAPI, File, UploadFile, HTTPException
@@ -72,7 +71,9 @@ async def predict(file: UploadFile = File(...)):
         ])
 
         # Send the formatted predictions to the chatbot
-        chat_request = ChatRequest(message=f"The model analyzed the image and found:\n{predictions_text}")
+        chat_request = ChatRequest(message=f"Please analyze this result, and give the final prediction whether
+                                   it is autistic or not, make sure if 2/4 models predict non autistic, then it is not autistic. Just
+                                   give me the final prediction of Autistic or Non-Autistic.\n{predictions_text}")
         chat_response = await chat(chat_request)
 
         return chat_response  # Directly return the chatbot response
