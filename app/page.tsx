@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { ArrowRight } from 'lucide-react'
 import NavigationBar from "@/components/navigationbar";
-import { Sparkles, Brain, Shield } from 'lucide-react';
+import { Search, Zap, Shield } from 'lucide-react';
 import { Border } from "@/components/border";
 
 export default function WelcomePage() {
@@ -41,28 +41,28 @@ export default function WelcomePage() {
               Welcome to MiniMinds
             </h1>
             <p className="font-semibold text-xl sm:text-lg text-black-200 max-w-2xl mx-auto font-space-grotesk">
-              Autism affects every child differently, but early detection can lead to timely intervention and better outcomes. With our app, parents can recognize early signs in toddlers and access the resources needed to support their child's development. Start detecting early - because every step matters!
+              Autism affects every child differently, but early detection can lead to timely intervention and better outcomes. With our system, parents can recognize early signs in toddlers and access the resources needed to support their child's development. Start detecting early - because every step matters!
             </p>
 
             {/* Feature Cards */}
             <div className="grid md:grid-cols-3 gap-8 mb-16">
               <div className="bg-blue-950/90 backdrop-blur-sm rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-5 hover:shadow-xl">
                 <div className="bg-blue-100 rounded-full w-14 h-14 flex items-center justify-center mb-6">
-                  <Sparkles className="h-7 w-7 text-blue-950" />
+                  <Search className="h-7 w-7 text-blue-950" />
                 </div>
-                <h3 className="text-2xl font-bold text-blue-200 mb-3">Easy to Use</h3>
+                <h3 className="text-2xl font-bold text-blue-200 mb-3">Simple Detection</h3>
                 <p className="text-white">
-                  Intuitive interface designed for everyone, making the assessment process simple and straightforward.
+                  Recognize early signs of autism in toddlers with an intuitive and user-friendly interface.
                 </p>
               </div>
 
               <div className="bg-blue-950/90 backdrop-blur-sm rounded-xl shadow-lg p-8 transform transition-all duration-300 hover:-translate-y-5 hover:shadow-xl">
                 <div className="bg-blue-100 rounded-full w-14 h-14 flex items-center justify-center mb-6">
-                  <Brain className="h-7 w-7 text-blue-950" />
+                  <Zap className="h-7 w-7 text-blue-950" />
                 </div>
-                <h3 className="text-2xl font-bold text-blue-200 mb-3">Powerful Features</h3>
+                <h3 className="text-2xl font-bold text-blue-200 mb-3">Fast Insights</h3>
                 <p className="text-white">
-                  Everything you need to succeed with comprehensive assessment tools backed by research.
+                  Get quick, research-backed insights to support your child's development.
                 </p>
               </div>
 
@@ -70,9 +70,9 @@ export default function WelcomePage() {
                 <div className="bg-blue-100 rounded-full w-14 h-14 flex items-center justify-center mb-6">
                   <Shield className="h-7 w-7 text-blue-950" />
                 </div>
-                <h3 className="text-2xl font-bold text-blue-200 mb-3">Secure & Reliable</h3>
+                <h3 className="text-2xl font-bold text-blue-200 mb-3">No Data Storage</h3>
                 <p className="text-white">
-                  Your data is always protected with enterprise-grade security and privacy measures.
+                  Enjoy peace of mind knowing your information is never stored or shared.
                 </p>
               </div>
             </div>
