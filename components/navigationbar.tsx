@@ -5,38 +5,50 @@ import Link from "next/link";
 
 const NavigationBar = () => {
   return (
-    <header className="bg-gradient-to-r from-blue-600 to-blue-950 shadow-md">
-      <div className="flex items-center justify-between border border-blue-800/40 rounded-md px-6 py-3">
+    <header className="bg-transparent">
+      <div className="container mx-auto px-4 py-4">
+        <nav className="flex items-center justify-between">
+          {/* Logo and Brand Name (Left Side) */}
           <div className="flex items-center space-x-2">
-            <Brain className="h-8 w-8 text-white" />
-            <span className="text-white font-bold text-xl">MiniMinds</span>
+            <Brain className="h-8 w-8 text-black" />
+            <span className="text-black font-bold text-xl">MiniMinds</span>
           </div>
-          <ul className="flex space-x-6 justify-center">
-            <li>
-              <Link
-                href="/HomePage"
-                className="text-white text-lg font-bold hover:text-blue-200">
-                Home
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/UploadPage"
-                className="text-white text-lg font-bold hover:text-blue-200">
-                Detection
-              </Link>
-            </li>
-            <li>
-              <Link
-                href="/ContactPage"
-                className="text-white text-lg font-bold hover:text-blue-200">
-                Contact
-              </Link>
-            </li>
-          </ul>
+
+          {/* Navigation Links in Transparent Oval (Centered) */}
+          <div className="flex items-center space-x-6 bg-white/20 backdrop-blur-sm rounded-full px-8 py-3 hover:scale-105 transition-transform duration-200">
+            <ul className="flex space-x-8">
+              <li>
+                <Link
+                  href="/"
+                  className="text-black text-lg font-medium hover:text-blue-600 transition-colors duration-200"
+                >
+                  Home
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/UploadPage"
+                  className="text-black text-lg font-medium hover:text-blue-600 transition-colors duration-200"
+                >
+                  Detection
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/app"
+                  className="text-black text-lg font-medium hover:text-blue-600 transition-colors duration-200"
+                >
+                  Contact
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Empty Space on the Right (for balance) */}
+          <div className="w-40"></div>
+        </nav>
       </div>
     </header>
-
   );
 };
 

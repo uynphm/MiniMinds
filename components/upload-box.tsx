@@ -1,70 +1,96 @@
-"use client"
+"use client";
 
-import type React from "react"
-
-import { useState, useRef } from "react"
-import { cn } from "@/lib/cn"
+import type React from "react";
+import { useState, useRef } from "react";
+import { cn } from "@/lib/cn";
 
 interface UploadBoxProps {
-  title: string
-  icon: React.ReactNode
-  acceptTypes: string
-  onFileSelected: (file: File) => void
-  glowColor: string
+  title: string;
+  icon: React.ReactNode;
+  acceptTypes: string;
+  onFileSelected: (file: File) => void;
+  glowColor: string;
 }
 
 export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor }: UploadBoxProps) {
-  const [isDragging, setIsDragging] = useState(false)
-  const [isHovering, setIsHovering] = useState(false)
-  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [isDragging, setIsDragging] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(true)
-  }
+    e.preventDefault();
+    setIsDragging(true);
+  };
 
   const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(false)
-  }
+    e.preventDefault();
+    setIsDragging(false);
+  };
 
   const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
-    e.preventDefault()
-    setIsDragging(false)
+    e.preventDefault();
+    setIsDragging(false);
 
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      onFileSelected(e.dataTransfer.files[0])
+      onFileSelected(e.dataTransfer.files[0]);
     }
-  }
+  };
 
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      onFileSelected(e.target.files[0])
+      onFileSelected(e.target.files[0]);
     }
-  }
+  };
 
   return (
     <div
-      className="relative aspect-square rounded-lg overflow-hidden bg-gray-200"
+      className="relative aspect-square rounded-lg overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Lightning effect */}
+      {/* Dark blue background for the box */}
       <div
         className={cn(
-          "absolute inset-0 w-full opacity-0 transition-opacity duration-300 ease-in-out",
-          isHovering ? "opacity-60" : "opacity-0",
+          "absolute inset-0 bg-blue-950 transition-all duration-500 ease-in-out",
+          isHovering ? "opacity-0" : "opacity-100",
+        )}
+      />
+
+      {/* Soft glow around the box */}
+      <div
+        className={cn(
+          "absolute inset-0 rounded-lg border border-blue-800/50 transition-all duration-500 ease-in-out",
+          isHovering ? "opacity-0" : "opacity-100",
         )}
         style={{
-          background: `linear-gradient(to bottom, ${glowColor} 0%, transparent 100%)`,
-          clipPath: "polygon(50% 0%, 100% 100%, 0% 100%)",
+          boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)",
         }}
+      />
+
+      {/* Lightning effect (shines from above the box) */}
+      <div
+        className={cn(
+          "absolute -top-20 left-0 right-0 h-20 w-full transition-all duration-500 ease-in-out",
+          isHovering ? "opacity-100" : "opacity-0",
+        )}
+        style={{
+          background: `linear-gradient(to bottom, white 0%, ${glowColor} 100%)`,
+          clipPath: "polygon(0% 0%, 100% 0%, 50% 100%)",
+        }}
+      />
+
+      {/* Shadow overlay (slightly visible by default) */}
+      <div
+        className={cn(
+          "absolute inset-0 bg-black/30 transition-opacity duration-500 ease-in-out",
+          isHovering ? "opacity-0" : "opacity-100",
+        )}
       />
 
       <div
         className={cn(
-          "relative h-full w-full flex flex-col items-center justify-center rounded-lg border border-gray-700 transition-all duration-300",
-          isDragging ? "border-blue-500 bg-blue-500/10" : "border-gray-700",
+          "relative h-full w-full flex flex-col items-center justify-center rounded-lg border border-blue-800/50 transition-all duration-500",
+          isDragging ? "border-blue-500 bg-blue-500/10" : "border-blue-800/50",
           "cursor-pointer",
         )}
         onDragOver={handleDragOver}
@@ -72,21 +98,36 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        <h2 className="text-2xl font-bold text-white mb-8">{title}</h2>
+        {/* Title (slightly shadowed by default, fully visible on hover) */}
+        <h2
+          className={cn(
+            "text-2xl font-bold text-white mb-8 transition-opacity duration-500",
+            isHovering ? "opacity-100" : "opacity-70",
+          )}
+        >
+          {title}
+        </h2>
 
+        {/* Upload area (slightly shadowed by default, fully visible on hover) */}
         <div
           className={cn(
-            "w-32 h-32 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-300",
-            isDragging || isHovering ? "border-blue-500 text-blue-500" : "border-gray-700 text-gray-400",
+            "w-32 h-32 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500",
+            isDragging || isHovering ? "border-blue-500 text-blue-500" : "border-blue-800/50 text-gray-400",
           )}
         >
           {icon}
-          <span className="mt-2 text-lg font-medium">Upload File</span>
+          <span
+            className={cn(
+              "mt-2 text-lg font-medium transition-opacity duration-500",
+              isHovering ? "opacity-100" : "opacity-70",
+            )}
+          >
+            Upload File
+          </span>
         </div>
 
         <input ref={fileInputRef} type="file" accept={acceptTypes} className="hidden" onChange={handleFileInput} />
       </div>
     </div>
-  )
+  );
 }
-
