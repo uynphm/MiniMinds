@@ -54,7 +54,7 @@ export default function AnalyzePage() {
           >
             <div className="space-y-2">
               <motion.h1
-                className="text-3xl sm:text-4xl font-bold tracking-tight text-slate-800"
+                className="text-4xl sm:text-5xl font-bold tracking-tight text-slate-800"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
@@ -62,7 +62,7 @@ export default function AnalyzePage() {
                 Autism Detection Analysis
               </motion.h1>
               <motion.p
-                className="text-slate-600 font-space-grotesk"
+                className="text-xl sm:text-2xl text-slate-600 font-space-grotesk"
                 initial={{ y: 20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
