@@ -67,7 +67,7 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         }}
       />
 
-      {/* Lightning effect (shines from above the box) */}
+      {/* Lightning effect */}
       <div
         className={cn(
           "absolute -top-20 left-0 right-0 h-20 w-full transition-all duration-500 ease-in-out",
@@ -98,28 +98,28 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         onDrop={handleDrop}
         onClick={() => fileInputRef.current?.click()}
       >
-        {/* Title (slightly shadowed by default, fully visible on hover) */}
+        {/* Title (white by default, dark blue on hover) */}
         <h2
           className={cn(
-            "text-2xl font-bold text-white mb-8 transition-opacity duration-500",
-            isHovering ? "opacity-100" : "opacity-70",
+            "text-2xl font-bold mb-8 transition-colors duration-500",
+            isHovering ? "text-blue-600" : "text-white",
           )}
         >
           {title}
         </h2>
 
-        {/* Upload area (slightly shadowed by default, fully visible on hover) */}
+        {/* Upload area (white by default, dark blue on hover) */}
         <div
           className={cn(
             "w-32 h-32 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500",
-            isDragging || isHovering ? "border-blue-500 text-blue-500" : "border-blue-800/50 text-gray-400",
+            isDragging || isHovering ? "border-blue-500 text-blue-600" : "border-blue-800/50 text-white",
           )}
         >
           {icon}
           <span
             className={cn(
-              "mt-2 text-lg font-medium transition-opacity duration-500",
-              isHovering ? "opacity-100" : "opacity-70",
+              "mt-2 text-lg font-medium transition-colors duration-500",
+              isHovering ? "text-blue-600" : "text-white",
             )}
           >
             Upload File
