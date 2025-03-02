@@ -3,8 +3,8 @@
 import type React from "react";
 import { useState, useRef } from "react";
 import { Upload, X, ImageIcon, Film, Check, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
+import { Button } from "@/components/button";
+import { Progress } from "@/components/progress";
 import { cn } from "@/lib/cn";
 
 export function Uploader() {
