@@ -147,13 +147,13 @@
     transform: translate(0, 0);
   }
   25% {
-    transform: translate(20px, -20px);
+    transform: translate(40px, -40px);
   }
   50% {
-    transform: translate(-20px, 20px);
+    transform: translate(-40px, 40px);
   }
   75% {
-    transform: translate(10px, -10px);
+    transform: translate(40px, -40px);
   }
   100% {
     transform: translate(0, 0);
@@ -161,5 +161,5 @@
 }
 
 .animate-blob {
-  animation: float linear infinite;
+  animation: float 1s linear infinite;
 }
