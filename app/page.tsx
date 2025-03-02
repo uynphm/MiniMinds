@@ -3,19 +3,19 @@ import { ArrowRight } from "lucide-react"
 
 export default function WelcomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-24 bg-black text-white overflow-hidden">
+    <main className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-24 bg-blue-custom text-white overflow-hidden">
       <div className="w-full max-w-4xl text-center space-y-8 relative z-10">
-        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-500 to-purple-600 animate-pulse">
-          Welcome to AI Analyzer
+        <h1 className="text-4xl sm:text-6xl font-bold tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-700 to-blue-950 animate-pulse">
+          Welcome to MiniMinds
         </h1>
-        <p className="text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto font-space-grotesk">
-          Unlock insights from your media files with our cutting-edge AI analysis tool
+        <p className="font-mono text-xl sm:text-2xl text-black-200 max-w-2xl mx-auto font-space-grotesk">
+          Autism is a spectrum disorder, and it affects each person differently. We are here to help detect early signs of autism in toddlers.
         </p>
         <Link
           href="/UploadPage"
           className="inline-flex items-center px-6 py-3 text-lg font-medium text-white bg-blue-600 rounded-full hover:bg-blue-700 transition-colors duration-300 group"
         >
-          Get Started
+          Start Detection
           <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform duration-300" />
         </Link>
       </div>
