@@ -11,11 +11,10 @@ client = Groq(
     api_key=os.environ.get("GROQ_API_KEY")
 )
 
-@app.route('api/chat', methods=['POST'])
+@app.route('/api/chat', methods=['POST'])
 def chat():
-    data = request.json()
+    data = request.json
     user_input = data.get('message', '')
-
 
     chat_completion = client.chat.completions.create(
         messages=[
