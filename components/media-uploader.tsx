@@ -1,38 +1,34 @@
-import React, { useState } from "react";
-import { Film, ImageIcon } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ImageIcon, Film } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
 import { MediaPreview } from "@/components/media-preview";
 
-// Define the ModelPrediction type
 interface ModelPrediction {
-  label: string;
+  label: string; // Changed from 'model' to 'label' to match TypeScript interface
   class: string;
   confidence: number;
 }
 
-// Define the PredictionResponse type
 interface PredictionResponse {
   filename: string;
   predictions: ModelPrediction[];
 }
 
-interface MediaUploaderProps {
-  onFileUpload: (file: File) => void;
-  onClear: () => void;
-  results: PredictionResponse | null;
-  error: string | null;
-  uploading: boolean;
-  analyzing: boolean;
-}
-
-export function MediaUploader({ onFileUpload, onClear, results, error, uploading, analyzing }: MediaUploaderProps) {
+export function MediaUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [fileType, setFileType] = useState<"image" | "video" | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [results, setResults] = useState<PredictionResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFile = (file: File, type: "image" | "video") => {
     setFile(file);
     setFileType(type);
+    setError(null);
 
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
@@ -41,14 +37,62 @@ export function MediaUploader({ onFileUpload, onClear, results, error, uploading
 
   const handleUpload = async () => {
     if (!file) return;
-    onFileUpload(file);
+
+    setUploading(true);
+    setError(null);
+
+    try {
+      setAnalyzing(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Read and parse JSON safely
+      const rawText = await response.text();
+      console.log("Raw API response:", rawText);
+
+      let data: any;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        throw new Error(`Invalid JSON response: ${rawText}`);
+      }
+
+      console.log("Parsed API response:", data);
+
+      // Validate API response format
+      if (!data || typeof data !== "object" || !data.filename || typeof data.predictions !== "object") {
+        throw new Error("Invalid API response format");
+      }
+
+      // Convert predictions object to an array with 'label'
+      const predictionsArray: ModelPrediction[] = Object.entries(data.predictions).map(([model, result]) => ({
+        label: model, // Renaming 'model' to 'label'
+        ...(result as { class: string; confidence: number }),
+      }));
+
+      setResults({ filename: data.filename, predictions: predictionsArray });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred during analysis");
+      console.error("Analysis error:", err);
+    } finally {
+      setUploading(false);
+      setAnalyzing(false);
+    }
   };
 
   const handleClear = () => {
     setFile(null);
     setPreview(null);
     setFileType(null);
-    onClear();
+    setUploading(false);
+    setAnalyzing(false);
+    setResults(null);
+    setError(null);
   };
 
   if (file && preview) {
