@@ -5,11 +5,12 @@ import Link from "next/link";
 
 const NavigationBar = () => {
   return (
-    <header className="bg-transparent">
-      <div className="container mx-auto px-4 py-4">
-        <nav className="flex items-center justify-between">
+    <header className="bg-transparent relative"> {/* Add relative positioning */}
+      {/* Adjust padding for the navigation bar */}
+      <div className="mx-auto px-0 py-4">
+        <nav className="flex items-center justify-center"> {/* Center the navigation bar */}
           {/* Logo and Brand Name (Left Side) */}
-          <div className="flex items-center space-x-2">
+          <div className="absolute left-2 top-3 flex items-center space-x-2"> {/* Absolute positioning */}
             <Brain className="h-8 w-8 text-black" />
             <span className="text-black font-bold text-xl">MiniMinds</span>
           </div>
@@ -43,9 +44,6 @@ const NavigationBar = () => {
               </li>
             </ul>
           </div>
-
-          {/* Empty Space on the Right (for balance) */}
-          <div className="w-40"></div>
         </nav>
       </div>
     </header>
