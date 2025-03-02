@@ -29,11 +29,11 @@ def chat():
     return jsonify({"response": chat_completion.choices[0].message.content})
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=3000)
 
 """
 try {
-    const res = await fetch('http://localhost:5000/api/chat', {
+    const res = await fetch('http://localhost:3000/api/chat', {
     method: 'POST',
     headers: {
         'Content-Type': 'application/json',
