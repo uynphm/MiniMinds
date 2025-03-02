@@ -1,74 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import { MediaUploader } from "@/components/media-uploader";
 import { motion } from "framer-motion";
 import NavigationBar from "@/components/navigationbar";
-import { MediaUploader } from "@/components/media-uploader";
-
-// Define the ModelPrediction type
-interface ModelPrediction {
-  label: string;
-  class: string;
-  confidence: number;
-}
-
-// Define the PredictionResponse type
-interface PredictionResponse {
-  filename: string;
-  predictions: ModelPrediction[];
-}
 
 export default function AnalyzePage() {
-  const [results, setResults] = useState<PredictionResponse | null>(null);
-  const [error, setError] = useState<string | null>(null);
-  const [uploading, setUploading] = useState(false);
-  const [analyzing, setAnalyzing] = useState(false);
-
-  const handleFileUpload = async (file: File) => {
-    setUploading(true);
-    setError(null);
-
-    try {
-      setAnalyzing(true);
-      const formData = new FormData();
-      formData.append("file", file);
-
-      const response = await fetch("http://localhost:8000/predict", {
-        method: "POST",
-        body: formData,
-      });
-
-      const rawText = await response.text();
-      console.log("Raw API response:", rawText);
-
-      let data: PredictionResponse;
-      try {
-        data = JSON.parse(rawText) as PredictionResponse;
-      } catch {
-        throw new Error(`Invalid JSON response: ${rawText}`);
-      }
-
-      console.log("Parsed API response:", data);
-
-      if (!data || typeof data !== "object" || !data.filename || !Array.isArray(data.predictions)) {
-        throw new Error("Invalid API response format");
-      }
-
-      setResults(data);
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "An error occurred during analysis");
-      console.error("Analysis error:", err);
-    } finally {
-      setUploading(false);
-      setAnalyzing(false);
-    }
-  };
-
-  const handleClear = () => {
-    setResults(null);
-    setError(null);
-  };
-
   return (
     <div className="relative min-h-screen bg-blue-200 text-white overflow-hidden">
       {/* Background Boxes */}
@@ -103,7 +39,7 @@ export default function AnalyzePage() {
 
         {/* Centered Content */}
         <motion.main
-          className="flex-1 flex items-center justify-center p-4 sm:p-24"
+          className="flex-1 flex items-center justify-center p-4 sm:p-24" // Center the MediaUploader
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.5 }}
@@ -129,17 +65,10 @@ export default function AnalyzePage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                Upload your files for instant AI-powered analysis and insights.
+                Upload an image for instant AI-powered analysis and insights.
               </motion.p>
             </div>
-            <MediaUploader
-              onFileUpload={handleFileUpload}
-              onClear={handleClear}
-              results={results}
-              error={error}
-              uploading={uploading}
-              analyzing={analyzing}
-            />
+            <MediaUploader />
             <motion.div
               id="results"
               className="bg-white p-6 rounded-lg shadow-lg"
@@ -148,19 +77,8 @@ export default function AnalyzePage() {
               transition={{ delay: 0.5, duration: 0.5 }}
             >
               <h2 className="text-2xl font-bold text-blue-950/90 mb-4">Analysis Results</h2>
-              {analyzing ? (
-                <p className="text-blue-950/90 font-space-grotesk">Analyzing...</p>
-              ) : results ? (
-                <div className="text-blue-950/90 font-space-grotesk">
-                  {results.predictions.map((prediction, index) => (
-                    <div key={index} className="mb-2">
-                      <strong>{prediction.label}:</strong> {prediction.class} (Confidence: {prediction.confidence.toFixed(2)}%)
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <p className="text-blue-950/90 font-space-grotesk">Upload a file to see AI-generated insights here.</p>
-              )}
+              <p className="text-blue-950/90 font-space-grotesk">Upload an image to see AI-generated insights here.</p>
+              {/* Results will be dynamically inserted here */}
             </motion.div>
           </motion.div>
         </motion.main>
