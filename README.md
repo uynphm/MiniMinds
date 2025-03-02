@@ -20,7 +20,7 @@ Autism spectrum disorder (ASD) is a developmental condition that affects communi
 ---
 
 ## Features
-- **picture Analysis**: Upload picture of toddlers to analyze their expression.
+- **Picture Analysis**: Upload picture of toddlers to analyze their expression.
 - **Autism Detection**: Uses machine learning models to detect early signs of autism.
 - **User-Friendly Interface**: Simple and intuitive design for parents and caregivers.
 - **Secure Data Handling**: Ensures privacy and security of uploaded picture.
