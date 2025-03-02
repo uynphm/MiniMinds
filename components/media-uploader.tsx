@@ -1,38 +1,21 @@
-import React, { useState } from "react";
-import { Film, ImageIcon } from "lucide-react";
+"use client";
+
+import { useState } from "react";
+import { ImageIcon } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
 import { MediaPreview } from "@/components/media-preview";
 
-// Define the ModelPrediction type
-interface ModelPrediction {
-  label: string;
-  class: string;
-  confidence: number;
-}
-
-// Define the PredictionResponse type
-interface PredictionResponse {
-  filename: string;
-  predictions: ModelPrediction[];
-}
-
-interface MediaUploaderProps {
-  onFileUpload: (file: File) => void;
-  onClear: () => void;
-  results: PredictionResponse | null;
-  error: string | null;
-  uploading: boolean;
-  analyzing: boolean;
-}
-
-export function MediaUploader({ onFileUpload, onClear, results, error, uploading, analyzing }: MediaUploaderProps) {
+export function MediaUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [fileType, setFileType] = useState<"image" | "video" | null>(null);
+  const [uploading, setUploading] = useState(false);
+  const [analyzing, setAnalyzing] = useState(false);
+  const [results, setResults] = useState(null);
+  const [error, setError] = useState<string | null>(null);
 
-  const handleFile = (file: File, type: "image" | "video") => {
+  const handleFile = (file: File) => {
     setFile(file);
-    setFileType(type);
+    setError(null);
 
     const reader = new FileReader();
     reader.onloadend = () => setPreview(reader.result as string);
@@ -41,14 +24,38 @@ export function MediaUploader({ onFileUpload, onClear, results, error, uploading
 
   const handleUpload = async () => {
     if (!file) return;
-    onFileUpload(file);
+
+    setUploading(true);
+    setError(null);
+
+    try {
+      setAnalyzing(true);
+      const formData = new FormData();
+      formData.append("file", file);
+
+      const response = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await response.json();
+      setResults(data);
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred during analysis");
+      console.error("Analysis error:", err);
+    } finally {
+      setUploading(false);
+      setAnalyzing(false);
+    }
   };
 
   const handleClear = () => {
     setFile(null);
     setPreview(null);
-    setFileType(null);
-    onClear();
+    setUploading(false);
+    setAnalyzing(false);
+    setResults(null);
+    setError(null);
   };
 
   if (file && preview) {
@@ -56,7 +63,6 @@ export function MediaUploader({ onFileUpload, onClear, results, error, uploading
       <MediaPreview
         file={file}
         preview={preview}
-        fileType={fileType!}
         uploading={uploading}
         analyzing={analyzing}
         results={results}
@@ -68,20 +74,12 @@ export function MediaUploader({ onFileUpload, onClear, results, error, uploading
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <UploadBox
-        title="Analyze Video"
-        icon={<Film className="h-12 w-12" />}
-        acceptTypes="video/*"
-        onFileSelected={(file) => handleFile(file, "video")}
-        glowColor="#3b82f6"
-      />
-
+    <div className="flex items-center justify-center w-full"> {/* Center the UploadBox */}
       <UploadBox
         title="Analyze Image"
-        icon={<ImageIcon className="h-12 w-12" />}
+        icon={<ImageIcon className="h-8 w-8" />} // Smaller icon size (h-8 w-8)
         acceptTypes="image/*"
-        onFileSelected={(file) => handleFile(file, "image")}
+        onFileSelected={handleFile}
         glowColor="#8b5cf6"
       />
     </div>
