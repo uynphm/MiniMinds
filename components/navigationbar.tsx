@@ -10,8 +10,8 @@ const NavigationBar = () => {
         <nav className="flex items-center justify-between">
           {/* Logo and Brand Name (Left Side) */}
           <div className="flex items-center space-x-2">
-            <Brain className="h-8 w-8 text-black" />
-            <span className="text-black font-bold text-xl">MiniMinds</span>
+            <Brain className="h-8 w-8 text-blue-950/90" />
+            <span className="text-blue-950/90 font-bold text-xl">MiniMinds</span>
           </div>
 
           {/* Navigation Links in Transparent Oval (Centered) */}
