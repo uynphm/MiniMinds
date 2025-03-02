@@ -8,6 +8,7 @@ import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import Activation, DepthwiseConv2D, Dropout
 from tensorflow.keras import backend as K
+import io
 
 # Constants
 PHOTO_SIZE = 224

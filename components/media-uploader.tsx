@@ -5,23 +5,33 @@ import { ImageIcon, Film } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
 import { MediaPreview } from "@/components/media-preview";
 
+interface ModelPrediction {
+  label: string; // Changed from 'model' to 'label' to match TypeScript interface
+  class: string;
+  confidence: number;
+}
+
+interface PredictionResponse {
+  filename: string;
+  predictions: ModelPrediction[];
+}
+
 export function MediaUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
   const [fileType, setFileType] = useState<"image" | "video" | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState<string | null>(null);
+  const [results, setResults] = useState<PredictionResponse | null>(null);
+  const [error, setError] = useState<string | null>(null);
 
   const handleFile = (file: File, type: "image" | "video") => {
     setFile(file);
     setFileType(type);
+    setError(null);
 
-    // Create preview
     const reader = new FileReader();
-    reader.onload = (e) => {
-      setPreview(e.target?.result as string);
-    };
+    reader.onloadend = () => setPreview(reader.result as string);
     reader.readAsDataURL(file);
   };
 
@@ -29,20 +39,50 @@ export function MediaUploader() {
     if (!file) return;
 
     setUploading(true);
+    setError(null);
 
-    // Simulate upload
-    await new Promise((resolve) => setTimeout(resolve, 2000));
+    try {
+      setAnalyzing(true);
+      const formData = new FormData();
+      formData.append("file", file);
 
-    setUploading(false);
-    setAnalyzing(true);
+      const response = await fetch("http://localhost:8000/predict", {
+        method: "POST",
+        body: formData,
+      });
 
-    // Simulate AI analysis
-    await new Promise((resolve) => setTimeout(resolve, 3000));
+      // Read and parse JSON safely
+      const rawText = await response.text();
+      console.log("Raw API response:", rawText);
 
-    // Placeholder for AI analysis results
-    setResults("AI analysis complete. Here are the insights: ...");
+      let data: any;
+      try {
+        data = JSON.parse(rawText);
+      } catch (parseError) {
+        throw new Error(`Invalid JSON response: ${rawText}`);
+      }
 
-    setAnalyzing(false);
+      console.log("Parsed API response:", data);
+
+      // Validate API response format
+      if (!data || typeof data !== "object" || !data.filename || typeof data.predictions !== "object") {
+        throw new Error("Invalid API response format");
+      }
+
+      // Convert predictions object to an array with 'label'
+      const predictionsArray: ModelPrediction[] = Object.entries(data.predictions).map(([model, result]) => ({
+        label: model, // Renaming 'model' to 'label'
+        ...(result as { class: string; confidence: number }),
+      }));
+
+      setResults({ filename: data.filename, predictions: predictionsArray });
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "An error occurred during analysis");
+      console.error("Analysis error:", err);
+    } finally {
+      setUploading(false);
+      setAnalyzing(false);
+    }
   };
 
   const handleClear = () => {
@@ -52,6 +92,7 @@ export function MediaUploader() {
     setUploading(false);
     setAnalyzing(false);
     setResults(null);
+    setError(null);
   };
 
   if (file && preview) {
@@ -63,6 +104,7 @@ export function MediaUploader() {
         uploading={uploading}
         analyzing={analyzing}
         results={results}
+        error={error}
         onUpload={handleUpload}
         onClear={handleClear}
       />
@@ -73,7 +115,7 @@ export function MediaUploader() {
     <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
       <UploadBox
         title="Analyze Video"
-        icon={<Film className="h-12 w-12 " />}
+        icon={<Film className="h-12 w-12" />}
         acceptTypes="video/*"
         onFileSelected={(file) => handleFile(file, "video")}
         glowColor="#3b82f6"

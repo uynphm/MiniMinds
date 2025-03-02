@@ -1,53 +1,87 @@
+from curses.ascii import HT
 import os
+import io
+from fastapi import FastAPI, File, UploadFile, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
+from pydantic import BaseModel
+from autism_detection import ModelPredictor
+from dotenv import load_dotenv
 from groq import Groq
-from flask import Flask, request, jsonify
-from flask_cors import CORS
 
-app = Flask(__name__)
-CORS(app)
-
-client = Groq(
-    # export GROQ_API_KEY=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
-    api_key=os.environ.get("GROQ_API_KEY")
+# Initialize FastAPI app
+app = FastAPI(
+    title="MiniMinds Combined API",
+    description="API for chat and autism detection services",
+    version="1.0.0"
 )
 
-@app.route('api/chat', methods=['POST'])
-def chat():
-    data = request.json()
-    user_input = data.get('message', '')
+# Configure CORS
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
+# Load API key
+load_dotenv()
+api_key = os.getenv("GROQ_API_KEY")
+if not api_key:
+    raise ValueError("GROQ_API_KEY environment variable is not set")
 
-    chat_completion = client.chat.completions.create(
-        messages=[
+# Initialize Groq client
+client = Groq(api_key=api_key)
+
+# Initialize model predictor
+predictor = ModelPredictor()
+
+# Request model for chat endpoint
+class ChatRequest(BaseModel):
+    message: str
+
+@app.post("/api/chat")
+async def chat(request: ChatRequest):
+    try:
+        chat_completion = client.chat.completions.create(
+            messages=[{"role": "user", "content": request.message}],
+            model="llama-3.2-90b-vision-preview"
+        )
+        return JSONResponse({"response": chat_completion.choices[0].message.content})
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+@app.post("/predict")
+async def predict(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+
+        if not file.content_type.startswith("image/"):
+            raise HTTPException(status_code=400, detail="Only image files are supported")
+
+        raw_predictions = predictor.predict(contents)
+
+        if not raw_predictions:
+            raise HTTPException(status_code=500, detail="Model returned no predictions")
+
+        # Ensure response structure is correct
+        predictions_array = [
             {
-                "role": "user",
-                "content": user_input,
+                "label": model_name,
+                "class": pred_data.get("class", "Unknown"),
+                "confidence": pred_data.get("confidence", 0.0)
             }
-        ],
-        model="llama-3.2-90b-vision-preview"
-    )
+            for model_name, pred_data in raw_predictions.items()
+        ]
 
-    return jsonify({"response": chat_completion.choices[0].message.content})
+        response_data = {
+            "filename": file.filename or "unknown",
+            "predictions": predictions_array
+        }
 
-if __name__ == "__main__":
-    app.run(debug=True)
+        return JSONResponse(content=response_data)
 
-"""
-try {
-    const res = await fetch('http://localhost:5000/api/chat', {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ message: input }),
-    });
-    
-    const data = await res.json();
-    setResponse(data.response);
-} catch (error) {
-    console.error('Error:', error);
-    setResponse('Error occurred while fetching response');
-} finally {
-    setLoading(false);
-}
-"""
+    except Exception as e:
+        print(f"Error: {str(e)}")  # Debugging
+        return JSONResponse(content={"error": str(e)}, status_code=500)
