@@ -161,5 +161,9 @@
 }
 
 .animate-blob {
-  animation: float 1s linear infinite;
+  animation: float 70s linear infinite;
+}
+
+.text-blue-custom {
+  color: #91BAD6;
 }
