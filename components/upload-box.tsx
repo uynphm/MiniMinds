@@ -44,7 +44,7 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
 
   return (
     <div
-      className="relative aspect-square rounded-lg overflow-hidden"
+      className="relative w-80 h-80 rounded-lg overflow-hidden"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
@@ -111,7 +111,7 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         {/* Upload area (white by default, dark blue on hover) */}
         <div
           className={cn(
-            "w-32 h-32 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500",
+            "w-24 h-24 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500",
             isDragging || isHovering ? "border-blue-500 text-blue-600" : "border-blue-800/50 text-white",
           )}
         >
