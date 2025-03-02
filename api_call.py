@@ -65,23 +65,20 @@ async def predict(file: UploadFile = File(...)):
         if not raw_predictions:
             raise HTTPException(status_code=500, detail="Model returned no predictions")
 
-        # Ensure response structure is correct
-        predictions_array = [
-            {
-                "label": model_name,
-                "class": pred_data.get("class", "Unknown"),
-                "confidence": pred_data.get("confidence", 0.0)
-            }
+        # Format the predictions into a readable message
+        predictions_text = "\n".join([
+            f"Model: {model_name}, Class: {pred_data.get('class', 'Unknown')}, Confidence: {pred_data.get('confidence', 0.0):.2f}"
             for model_name, pred_data in raw_predictions.items()
-        ]
+        ])
 
-        response_data = {
-            "filename": file.filename or "unknown",
-            "predictions": predictions_array
-        }
+        # Send the formatted predictions to the chatbot
+        chat_request = ChatRequest(message=f"The model analyzed the image and found:\n{predictions_text}")
+        chat_response = await chat(chat_request)
 
-        return JSONResponse(content=response_data)
+        return chat_response  # Directly return the chatbot response
 
     except Exception as e:
         print(f"Error: {str(e)}")  # Debugging
         return JSONResponse(content={"error": str(e)}, status_code=500)
+
+# use uvicorn api_call:app --reload
