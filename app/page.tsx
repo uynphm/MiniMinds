@@ -9,7 +9,7 @@ export default function WelcomePage() {
     <main className="flex h-screen flex-col items-center justify-center p-4 sm:p-24 bg-blue-custom text-white overflow-hidden">
       <div className="mt-8 w-full h-full justify-center items-center flex flex-col">
         {/* Navigation bar */}
-        <div className="w-full absolute inset-0 overflow-hidden">
+        <div className="z-10 w-full absolute inset-0 overflow-hidden">
           <NavigationBar />
         </div>
         <div className="w-full max-w-4xl text-center space-y-8 relative z-10 animate-bounce-in">
