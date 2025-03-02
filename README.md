@@ -1,36 +1,61 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Early Autism Detection Web App
 
-## Getting Started
+The Early Autism Detection Web App is a cutting-edge tool designed to analyze videos of toddlers and detect early signs of autism spectrum disorder (ASD). By leveraging advanced computer vision and machine learning techniques, this app aims to provide parents, caregivers, and healthcare professionals with an accessible and early intervention tool.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Introduction
+Autism spectrum disorder (ASD) is a developmental condition that affects communication, behavior, and social interaction. Early detection and intervention can significantly improve outcomes for children with ASD. This web app provides a user-friendly platform to upload and analyze videos of toddlers, identifying potential signs of autism at an early age.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Features
+- **Video Analysis**: Upload videos of toddlers to analyze their behavior and movements.
+- **Autism Detection**: Uses machine learning models to detect early signs of autism.
+- **User-Friendly Interface**: Simple and intuitive design for parents and caregivers.
+- **Secure Data Handling**: Ensures privacy and security of uploaded videos.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How It Works
+1. **Video Upload**: Users upload a video of their toddler to the platform.
+2. **Behavior Analysis**: The app analyzes the video using computer vision and machine learning algorithms to detect behavioral patterns associated with autism.
+3. **Results & Insights**: The app generates a report highlighting potential signs of autism and provides recommendations for next steps.
+4. **Intervention Resources**: Users are directed to resources and professionals for further evaluation and support.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Installation
+To run this project locally, follow these steps:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/early-autism-detection-app.gitercel
+   ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+2. Install the dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Run the server:
+   ```bash
+   npm run dev
+   ```
+
+The application will be available on http://localhost:3000/
+
+---
+
+## Contributors
+Uyen Pham, Kundyz Serzhankyzy, Nguyen Pham, Kaulan Serzhanuly
