@@ -45,7 +45,7 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
 
   return (
     <div
-      className="relative aspect-square rounded-lg overflow-hidden bg-gray-900"
+      className="relative aspect-square rounded-lg overflow-hidden bg-gray-200"
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
