@@ -5,8 +5,7 @@ export default function Home() {
     <main className="flex min-h-screen flex-col items-center justify-start p-4 sm:p-24 bg-black">
       <div className="w-full max-w-6xl space-y-12">
         <div className="text-center space-y-2">
-          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">AI File Analysis</h1>
-          <p className="text-gray-400">Upload your files for instant AI-powered analysis and insights</p>
+          <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">Autism Detection</h1>
         </div>
         <MediaUploader />
         <div id="results" className="bg-gray-900 p-6 rounded-lg">
