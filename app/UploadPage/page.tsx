@@ -24,12 +24,16 @@ const BackgroundBubble = ({ delay = 0 }) => (
       repeatType: "reverse",
       delay,
     }}
-    style={{
-      backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, 255, 0.3)`,
-      width: `${Math.random() * 300 + 100}px`,
-      height: `${Math.random() * 300 + 100}px`,
-    }}
-  />
+  >
+    <div
+      style={{
+        backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, 255, 0.3)`,
+        width: `${Math.random() * 300 + 100}px`,
+        height: `${Math.random() * 300 + 100}px`,
+        borderRadius: '50%',
+      }}
+    />
+  </motion.div>
 )
 
 export default function AnalyzePage() {
