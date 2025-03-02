@@ -52,7 +52,7 @@ export default function AnalyzePage() {
           >
             <div className="space-y-2">
               <motion.h1
-                className="text-4xl sm:text-5xl font-bold tracking-tight text-blue-950/90"
+                className="text-3xl sm:text-4xl font-bold tracking-tight text-blue-950/90"
                 initial={{ y: -20, opacity: 0 }}
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.3, duration: 0.5 }}
