@@ -3,20 +3,36 @@ import { ArrowRight } from 'lucide-react'
 import NavigationBar from "@/components/navigationbar";
 import { Sparkles, Brain, Shield } from 'lucide-react';
 import { Border } from "@/components/border";
-import { Boxes } from "@/components/bgboxes";
 
 export default function WelcomePage() {
   return (
     <div className="relative min-h-screen bg-blue-200 text-white overflow-hidden">
-      {/* Background Boxes */}
-      <div className="fixed inset-0">
-        <Boxes />
-      </div>
 
       {/* Main Content */}
       <div className="relative z-20 flex flex-col min-h-screen">
         {/* Navigation */}
         <NavigationBar />
+
+        {/* Decorative Blobs */}
+        <div className="fixed inset-0 pointer-events-none">
+          <div className="absolute -inset-[10px] opacity-50">
+            {[...Array(20)].map((_, i) => (
+              <div
+                key={i}
+                className="absolute rounded-full mix-blend-screen animate-blob"
+                style={{
+                  backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`,
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  width: `${Math.random() * 300 + 50}px`,
+                  height: `${Math.random() * 300 + 50}px`,
+                  animationDelay: `${Math.random() * 10}s`,
+                  animationDuration: `${Math.random() * 20 + 10}s`,
+                }}
+              />
+            ))}
+          </div>
+        </div>
 
         {/* Content */}
         <main className="flex-1 flex items-center justify-center p-4 sm:p-24">
@@ -70,27 +86,6 @@ export default function WelcomePage() {
             </Link>
           </div>
         </main>
-      </div>
-
-      {/* Decorative Blobs */}
-      <div className="fixed inset-0 pointer-events-none">
-        <div className="absolute -inset-[10px] opacity-50">
-          {[...Array(20)].map((_, i) => (
-            <div
-              key={i}
-              className="absolute rounded-full mix-blend-screen animate-blob"
-              style={{
-                backgroundColor: `rgba(${Math.random() * 255}, ${Math.random() * 255}, ${Math.random() * 255}, 0.1)`,
-                top: `${Math.random() * 100}%`,
-                left: `${Math.random() * 100}%`,
-                width: `${Math.random() * 300 + 50}px`,
-                height: `${Math.random() * 300 + 50}px`,
-                animationDelay: `${Math.random() * 10}s`,
-                animationDuration: `${Math.random() * 20 + 10}s`,
-              }}
-            />
-          ))}
-        </div>
       </div>
     </div>
   )
