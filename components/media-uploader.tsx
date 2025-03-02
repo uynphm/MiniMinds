@@ -1,33 +1,20 @@
 "use client";
 
 import { useState } from "react";
-import { ImageIcon, Film } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
 import { MediaPreview } from "@/components/media-preview";
-
-interface ModelPrediction {
-  label: string; // Changed from 'model' to 'label' to match TypeScript interface
-  class: string;
-  confidence: number;
-}
-
-interface PredictionResponse {
-  filename: string;
-  predictions: ModelPrediction[];
-}
 
 export function MediaUploader() {
   const [file, setFile] = useState<File | null>(null);
   const [preview, setPreview] = useState<string | null>(null);
-  const [fileType, setFileType] = useState<"image" | "video" | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState<PredictionResponse | null>(null);
+  const [results, setResults] = useState(null);
   const [error, setError] = useState<string | null>(null);
 
-  const handleFile = (file: File, type: "image" | "video") => {
+  const handleFile = (file: File) => {
     setFile(file);
-    setFileType(type);
     setError(null);
 
     const reader = new FileReader();
@@ -51,31 +38,8 @@ export function MediaUploader() {
         body: formData,
       });
 
-      // Read and parse JSON safely
-      const rawText = await response.text();
-      console.log("Raw API response:", rawText);
-
-      let data: any;
-      try {
-        data = JSON.parse(rawText);
-      } catch (parseError) {
-        throw new Error(`Invalid JSON response: ${rawText}`);
-      }
-
-      console.log("Parsed API response:", data);
-
-      // Validate API response format
-      if (!data || typeof data !== "object" || !data.filename || typeof data.predictions !== "object") {
-        throw new Error("Invalid API response format");
-      }
-
-      // Convert predictions object to an array with 'label'
-      const predictionsArray: ModelPrediction[] = Object.entries(data.predictions).map(([model, result]) => ({
-        label: model, // Renaming 'model' to 'label'
-        ...(result as { class: string; confidence: number }),
-      }));
-
-      setResults({ filename: data.filename, predictions: predictionsArray });
+      const data = await response.json();
+      setResults(data);
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during analysis");
       console.error("Analysis error:", err);
@@ -88,7 +52,6 @@ export function MediaUploader() {
   const handleClear = () => {
     setFile(null);
     setPreview(null);
-    setFileType(null);
     setUploading(false);
     setAnalyzing(false);
     setResults(null);
@@ -100,7 +63,6 @@ export function MediaUploader() {
       <MediaPreview
         file={file}
         preview={preview}
-        fileType={fileType!}
         uploading={uploading}
         analyzing={analyzing}
         results={results}
@@ -112,20 +74,12 @@ export function MediaUploader() {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-      <UploadBox
-        title="Analyze Video"
-        icon={<Film className="h-12 w-12" />}
-        acceptTypes="video/*"
-        onFileSelected={(file) => handleFile(file, "video")}
-        glowColor="#3b82f6"
-      />
-
+    <div className="flex items-center justify-center w-full"> {/* Center the UploadBox */}
       <UploadBox
         title="Analyze Image"
-        icon={<ImageIcon className="h-12 w-12" />}
+        icon={<ImageIcon className="h-8 w-8" />} // Smaller icon size (h-8 w-8)
         acceptTypes="image/*"
-        onFileSelected={(file) => handleFile(file, "image")}
+        onFileSelected={handleFile}
         glowColor="#8b5cf6"
       />
     </div>
