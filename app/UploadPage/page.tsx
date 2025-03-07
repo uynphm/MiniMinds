@@ -69,17 +69,6 @@ export default function AnalyzePage() {
               </motion.p>
             </div>
             <MediaUploader />
-            <motion.div
-              id="results"
-              className="bg-white p-6 rounded-lg shadow-lg"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5, duration: 0.5 }}
-            >
-              <h2 className="text-2xl font-bold text-blue-950/90 mb-4">Analysis Results</h2>
-              <p className="text-blue-950/90 font-space-grotesk">Upload an image to see AI-generated insights here.</p>
-              {/* Results will be dynamically inserted here */}
-            </motion.div>
           </motion.div>
         </motion.main>
       </div>

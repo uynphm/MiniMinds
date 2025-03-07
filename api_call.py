@@ -147,7 +147,7 @@ async def analyze_video(file: UploadFile = File(...)):
             results.append(chat_completion.choices[0].message.content)
 
         os.remove(temp_video_path)  # Cleanup
-
+        
         return JSONResponse({"responses": results})
 
     except Exception as e:
