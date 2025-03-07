@@ -45,6 +45,3 @@ next-env.d.ts
 # Ignore files from tf_env
 tf_env/
 tf_env/.*
-tf_env/.gitignore
-_pycache_/
-_pycache_/.*
