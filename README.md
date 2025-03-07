@@ -58,6 +58,7 @@ To run this project locally, follow these steps:
    pip install fastapi==0.115.11
    pip install opencv-python==4.11.0.86
    pip install pydantic==2.10.6
+   pip install python-multipart
    ```
 3. **Run API server:**
    
