@@ -65,7 +65,7 @@ export default function AnalyzePage() {
                 animate={{ y: 0, opacity: 1 }}
                 transition={{ delay: 0.4, duration: 0.5 }}
               >
-                Upload an image for instant AI-powered analysis and insights.
+                Upload an image and a video for instant AI-powered analysis and insights.
               </motion.p>
             </div>
             <MediaUploader />

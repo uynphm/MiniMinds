@@ -5,12 +5,25 @@ import gdown
 from PIL import Image
 from skimage import transform
 from tensorflow.keras.models import load_model
-from tensorflow.keras.layers import Activation, DepthwiseConv2D, Dropout
 from tensorflow.keras import backend as K
 import io
 
 PHOTO_SIZE = 224
 MODEL_DIR = "./models/"
+
+# Define FixedDropout outside of ModelPredictor
+class FixedDropout(tf.keras.layers.Dropout):
+    def _get_noise_shape(self, inputs):
+        if self.noise_shape is None:
+            return self.noise_shape
+        return tuple([None if i is None else shape for i, shape in zip(self.noise_shape, tf.keras.backend.shape(inputs))])
+
+# Custom DepthwiseConv2D
+class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
+    def __init__(self, *args, **kwargs):
+        if 'groups' in kwargs:
+            del kwargs['groups']
+        super().__init__(*args, **kwargs)
 
 class ModelPredictor:
     def __init__(self):
@@ -18,11 +31,11 @@ class ModelPredictor:
         self.models = self._load_models()
 
     def _get_custom_objects(self):
+        # Removed 'swish' to avoid JSON serialization issues.
         return {
-            'swish': tf.keras.activations.swish,
             'relu6': tf.keras.layers.ReLU(max_value=6),
-            'DepthwiseConv2D': self.CustomDepthwiseConv2D,
-            'FixedDropout': self.FixedDropout
+            'DepthwiseConv2D': CustomDepthwiseConv2D,
+            'FixedDropout': FixedDropout
         }
 
     def _load_models(self):
@@ -33,12 +46,17 @@ class ModelPredictor:
             self._download_model_from_drive('1LLCX4Vy2AjySOnAuyFo15-Q8YdXLj5B1', 'inception_model.h5')
             self._download_model_from_drive('1XlQoYfPVE5YqtRaW2WZwQLF1Yp_Zqfsu', 'vgg_model50.h5')
 
+            # Use custom_object_scope with our custom_objects.
             with tf.keras.utils.custom_object_scope(self.custom_objects):
                 return {
-                    'efficientnet_b0': load_model(os.path.join(MODEL_DIR, 'efficient_net_B0_model.h5'), compile=False),
-                    'efficientnet_b7': load_model(os.path.join(MODEL_DIR, 'efficient_net_B7_model.h5'), compile=False),
-                    'vgg': load_model(os.path.join(MODEL_DIR, 'vgg_model50.h5')),
-                    'inception': load_model(os.path.join(MODEL_DIR, 'inception_model.h5'))
+                    'efficientnet_b0': load_model(os.path.join(MODEL_DIR, 'efficient_net_B0_model.h5'),
+                                                   custom_objects=self.custom_objects, compile=False),
+                    'efficientnet_b7': load_model(os.path.join(MODEL_DIR, 'efficient_net_B7_model.h5'),
+                                                   custom_objects=self.custom_objects, compile=False),
+                    'vgg': load_model(os.path.join(MODEL_DIR, 'vgg_model50.h5'),
+                                      custom_objects=self.custom_objects),
+                    'inception': load_model(os.path.join(MODEL_DIR, 'inception_model.h5'),
+                                            custom_objects=self.custom_objects)
                 }
         except Exception as e:
             print(f"Error loading models: {str(e)}")
@@ -58,33 +76,14 @@ class ModelPredictor:
         else:
             print(f"{model_filename} already exists, skipping download.")
 
-    @staticmethod
-    def _swish(x):
-        return tf.keras.backend.sigmoid(x) * x
-
-    class FixedDropout(tf.keras.layers.Dropout):
-        def _get_noise_shape(self, inputs):
-            if self.noise_shape is None:
-                return self.noise_shape
-            return tuple([None if i is None else shape for i, shape in zip(self.noise_shape, tf.keras.backend.shape(inputs))])
-
-    class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
-        def __init__(self, *args, **kwargs):
-            if 'groups' in kwargs:
-                del kwargs['groups']
-            super().__init__(*args, **kwargs)
-
     def preprocess_image(self, image):
         """Preprocess image for model prediction"""
         if isinstance(image, str):
             image = Image.open(image)
-        
         if isinstance(image, bytes):
             image = Image.open(io.BytesIO(image))
-            
         if image.mode != 'RGB':
             image = image.convert('RGB')
-            
         np_image = np.array(image).astype('float32') / 255.0
         np_image = transform.resize(np_image, (PHOTO_SIZE, PHOTO_SIZE, 3))
         return np.expand_dims(np_image, axis=0)
@@ -93,7 +92,6 @@ class ModelPredictor:
         """Make predictions using all models"""
         try:
             img = self.preprocess_image(image)
-            
             # Get predictions from all models
             pred_vgg = self.models['vgg'].predict(img, verbose=0)
             pred_inception = self.models['inception'].predict(img, verbose=0)
