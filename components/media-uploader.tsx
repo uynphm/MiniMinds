@@ -3,95 +3,107 @@
 import { useState } from "react";
 import { ImageIcon } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
-import { MediaPreview } from "@/components/media-preview";
+import React from "react";
 
 export function MediaUploader() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [preview, setPreview] = useState<string | null>(null);
+
+ const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
-  const [results, setResults] = useState(null);
+  const [results, setResults] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
+  // Handle image and video file selections
   const handleFile = (file: File, type: "image" | "video") => {
     if (type === "image") {
       setImageFile(file);
-    } else if (type === "video") {
-      setVideoFile(file);
-    }
-    setError(null);
 
     const reader = new FileReader();
-    reader.onloadend = () => setPreview(reader.result as string);
-    reader.readAsDataURL(file);
+      reader.onloadend = () => setImagePreview(reader.result as string);
+      reader.readAsDataURL(file);
+    } else if (type === "video") {
+      setVideoFile(file);
+      // Generate a preview URL for video using URL.createObjectURL()
+      setVideoPreview(URL.createObjectURL(file));  // This creates a URL to display the video
+    }
+    setError(null);
   };
 
+  // Handle the video and image upload
   const handleUpload = async () => {
-    if (!imageFile && !videoFile) return;
 
+    if (!imageFile || !videoFile) return; // Ensure both are present
+  
     setUploading(true);
     setError(null);
-
+  
     try {
       setAnalyzing(true);
-      const formData = new FormData();
-      let response_image = null;
-      let response_video = null;
-
-      // Call the image API if it's an image
-      if (imageFile) {
-        formData.append("file", imageFile);
-        formData.append("type", "image");
-
-        response_image = await fetch("http://localhost:8000/predict", {
+  
+      // Form data for both image and video
+      const formDataImage = new FormData();
+      formDataImage.append("file", imageFile);
+      formDataImage.append("type", "image");
+  
+      const formDataVideo = new FormData();
+      formDataVideo.append("file", videoFile);
+      formDataVideo.append("type", "video");
+      
+      // Send both requests simultaneously
+      const [response_image, response_video] = await Promise.all([
+        fetch("http://localhost:8000/predict", {
           method: "POST",
-          body: formData,
-        });
-
-        if (!response_image.ok) {
-          throw new Error("Image analysis failed");
-        }
+          body: formDataImage,
+        }),
+        fetch("http://localhost:8000/analyze_video", {
+          method: "POST",
+          body: formDataVideo,
+        }),
+      ]);
+  
+      if (!response_image.ok || !response_video.ok) {
+        throw new Error("Image or video analysis failed");
       }
+      
+      // Parse both responses as JSON
+      const [imageAnalysisResponse, videoAnalysisResponse] = await Promise.all([
+        response_image.json(),
+        response_video.json(),
+      ]);
 
-      // Call the video API if it's a video
-      if (videoFile) {
-        formData.append("file", videoFile);
-        formData.append("type", "video");
+      const imageText = imageAnalysisResponse.response || 'No analysis for image.';
+      const videoText = videoAnalysisResponse.responses
+        ? videoAnalysisResponse.responses.join("\n")
+        : 'No analysis for video.';
+      
+      // Combine the responses into one message
+      const combinedMessage = `Analyze the provided responses to determine if the child is autistic:
 
-        response_video = await fetch("http://localhost:8000/analyze_video", {
-          method: "POST",
-          body: formData,
-        });
+      Image Analysis:
+      ${imageText}
 
-        if (!response_video.ok) {
-          throw new Error("Video analysis failed");
-        }
-      }
+      Video Analysis:
+      ${videoText}`;
 
-      // Wait for both responses to be processed (if applicable)
-      const imageText = response_image ? await response_image.text() : null;
-      const videoText = response_video ? await response_video.text() : null;
+      const response = await fetch("http://localhost:8000/api/chat", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          message: combinedMessage,
+        }),
+      });
 
-      // Ensure both responses are received before calling the chat API
-      if (imageText || videoText) {
-        // Send the responses to the chatbot API if either image or video is available
-        const response = await fetch("http://localhost:8000/api/chat", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            message: "Analyze the provided responses to determine if the child is autistic:",
-            image: imageText,
-            video: videoText,
-          }),
-        });
+      const data = await response.json();
 
-        const data = await response.json();
-        setResults(data);
+      if (data.response) {
+        setResults(data.response);
       } else {
-        alert("Please upload either an image or a video file for analysis.");
+        setError("No analysis provided by the chatbot.");
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : "An error occurred during analysis");
@@ -105,7 +117,10 @@ export function MediaUploader() {
   const handleClear = () => {
     setImageFile(null);
     setVideoFile(null);
-    setPreview(null);
+
+=======
+setImagePreview(null);
+    setVideoPreview(null);>>>>>>> main
     setUploading(false);
     setAnalyzing(false);
     setResults(null);
@@ -115,24 +130,42 @@ export function MediaUploader() {
   const isReadyForAnalysis = imageFile && videoFile;
 
   return (
-    <div className="flex items-center justify-center space-x-6">
-      {/* Image upload box */}
-      <UploadBox
-        title="Analyze Image"
-        icon={<ImageIcon className="h-8 w-8" />}
-        acceptTypes="image/*"
-        onFileSelected={(file) => handleFile(file, "image")}
-        glowColor="#8b5cf6"
-      />
+=======
+        <div className="flex flex-col items-center space-y-6">
+      {/* Image and Video upload boxes side by side */}
+      <div className="flex space-x-6">
+        <div className="flex flex-col items-center">
+          <UploadBox
+            title="Analyze Image"
+            icon={<ImageIcon className="h-8 w-8" />}
+            acceptTypes="image/*"
+            onFileSelected={(file) => handleFile(file, "image")}
+            glowColor="#8b5cf6"
+          />
+          {/* Display preview of image */}
+          {imageFile && imagePreview && (
+            <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5 w-40 h-40">
+              <img src={imagePreview} alt="Image Preview" className="object-cover w-full h-full" />
+            </div>
+          )}
+        </div>
 
-      {/* Video upload box */}
-      <UploadBox
-        title="Analyze Video"
-        icon={<ImageIcon className="h-8 w-8" />}
-        acceptTypes="video/*"
-        onFileSelected={(file) => handleFile(file, "video")}
-        glowColor="#8b5cf6"
-      />
+        <div className="flex flex-col items-center">
+          <UploadBox
+            title="Analyze Video"
+            icon={<ImageIcon className="h-8 w-8" />}
+            acceptTypes="video/*"
+            onFileSelected={(file) => handleFile(file, "video")}
+            glowColor="#8b5cf6"
+          />
+          {/* Display preview of video */}
+          {videoFile && videoPreview && (
+            <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5 w-40 h-40">
+              <video src={videoPreview} controls className="object-cover w-full h-full" />
+            </div>
+          )}
+        </div>
+      </div>
 
       {/* Show the "Start Analysis" button when both image and video are uploaded */}
       {isReadyForAnalysis && (
@@ -144,6 +177,16 @@ export function MediaUploader() {
           {uploading || analyzing ? "Analyzing..." : "Start Analysis"}
         </button>
       )}
+          {/* Show the results from the chatbot API inside the Analysis Results box */}
+      {results && (
+        <div className="mt-10 p-10 bg-black/5 border rounded-md w-full max-w-lg">
+          <h2 className="font-semibold text-xl">Analysis Results:</h2>
+          <pre className="whitespace-pre-wrap break-words text-lg">{results}</pre>
+        </div>
+      )}
+
+      {/* Show error message if any */}
+      {error && <p className="text-red-500">{error}</p>}
     </div>
   );
 }
