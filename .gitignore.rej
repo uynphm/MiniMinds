@@ -1,0 +1,11 @@
+diff a/.gitignore b/.gitignore	(rejected hunks)
+@@ -40,4 +40,6 @@
+ *.tsbuildinfo
+ next-env.d.ts
+ 
+-*.h5
+\ No newline at end of file
++efficient_net_B0_model.h5
++efficient_net_B7_model.h5
++vgg_model50.h5
+\ No newline at end of file
