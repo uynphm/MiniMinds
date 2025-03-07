@@ -9,7 +9,7 @@ export function MediaUploader() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
- const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -21,7 +21,7 @@ export function MediaUploader() {
     if (type === "image") {
       setImageFile(file);
 
-    const reader = new FileReader();
+      const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     } else if (type === "video") {
@@ -36,22 +36,22 @@ export function MediaUploader() {
   const handleUpload = async () => {
 
     if (!imageFile || !videoFile) return; // Ensure both are present
-  
+
     setUploading(true);
     setError(null);
-  
+
     try {
       setAnalyzing(true);
-  
+
       // Form data for both image and video
       const formDataImage = new FormData();
       formDataImage.append("file", imageFile);
       formDataImage.append("type", "image");
-  
+
       const formDataVideo = new FormData();
       formDataVideo.append("file", videoFile);
       formDataVideo.append("type", "video");
-      
+
       // Send both requests simultaneously
       const [response_image, response_video] = await Promise.all([
         fetch("http://localhost:8000/predict", {
@@ -63,11 +63,11 @@ export function MediaUploader() {
           body: formDataVideo,
         }),
       ]);
-  
+
       if (!response_image.ok || !response_video.ok) {
         throw new Error("Image or video analysis failed");
       }
-      
+
       // Parse both responses as JSON
       const [imageAnalysisResponse, videoAnalysisResponse] = await Promise.all([
         response_image.json(),
@@ -78,7 +78,7 @@ export function MediaUploader() {
       const videoText = videoAnalysisResponse.responses
         ? videoAnalysisResponse.responses.join("\n")
         : 'No analysis for video.';
-      
+
       // Combine the responses into one message
       const combinedMessage = `Analyze the provided responses to determine if the child is autistic:
 
@@ -118,9 +118,8 @@ export function MediaUploader() {
     setImageFile(null);
     setVideoFile(null);
 
-=======
-setImagePreview(null);
-    setVideoPreview(null);>>>>>>> main
+    setImagePreview(null);
+    setVideoPreview(null);
     setUploading(false);
     setAnalyzing(false);
     setResults(null);
@@ -130,8 +129,7 @@ setImagePreview(null);
   const isReadyForAnalysis = imageFile && videoFile;
 
   return (
-=======
-        <div className="flex flex-col items-center space-y-6">
+    <div className="flex flex-col items-center space-y-6">
       {/* Image and Video upload boxes side by side */}
       <div className="flex space-x-6">
         <div className="flex flex-col items-center">
@@ -177,7 +175,7 @@ setImagePreview(null);
           {uploading || analyzing ? "Analyzing..." : "Start Analysis"}
         </button>
       )}
-          {/* Show the results from the chatbot API inside the Analysis Results box */}
+      {/* Show the results from the chatbot API inside the Analysis Results box */}
       {results && (
         <div className="mt-10 p-10 bg-black/5 border rounded-md w-full max-w-lg">
           <h2 className="font-semibold text-xl">Analysis Results:</h2>
