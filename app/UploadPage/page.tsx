@@ -69,7 +69,6 @@ export default function AnalyzePage() {
               </motion.p>
             </div>
             <MediaUploader />
-=======
             <motion.div
               id="results"
               className="bg-white p-6 rounded-lg shadow-lg"
@@ -81,7 +80,6 @@ export default function AnalyzePage() {
               <p className="text-blue-950/90 font-space-grotesk">Upload an image to see AI-generated insights here.</p>
               {/* Results will be dynamically inserted here */}
             </motion.div>
->>>>>>> main
           </motion.div>
         </motion.main>
       </div>
