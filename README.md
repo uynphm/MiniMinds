@@ -62,11 +62,17 @@ To run this project locally, follow these steps:
    pip install pydantic==2.10.6
    ```
 4. **Run API server:**
+   
+   Grab the API key from Groq
+   Create a .env file (MiniMinds/.env)
+   
+   ```bash
+   GROQ_API_KEY = <API_KEY>
+   ```
    ```bash
    uvicorn api_call:app --reload
    ```
-   
-5. **Run web server:**
+6. **Run web server:**
    ```bash
    npm run dev
    ```
