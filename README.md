@@ -29,7 +29,7 @@ Autism spectrum disorder (ASD) is a developmental condition that affects communi
 
 ## How It Works
 1. **Video Picture**: Users upload a picture of their toddler to the platform.
-2. **Behavior Analysis**: The app analyzes the picture using computer vision and machine learning algorithms to detect autism from the facial expression.
+2. **Behavior Analysis**: The app analyzes the picture using computer vision and machine learning algorithms to detect autism from facial expressions.
 3. **Results & Insights**: The app generates a report highlighting potential signs of autism and provides recommendations for next steps.
 4. **Intervention Resources**: Users are directed to resources and professionals for further evaluation and support.
 
@@ -40,9 +40,9 @@ To run this project locally, follow these steps:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/yourusername/early-autism-detection-app.gitercel
+   git clone https://github.com/uynphm/MiniMinds
    ```
-2. Download these models and put them in the directory of the project.
+2. Download these models and put them in the project directory. ( MiniMinds/models )
    https://drive.google.com/drive/folders/1FC4eB0ZukVaUfGHSsDnVBvoraCiLqfmw?usp=sharing
 
 3. Install the dependencies:
@@ -54,9 +54,19 @@ To run this project locally, follow these steps:
    pip install pillow==10.0.0
    pip install scikit-image==0.21.0
    pip install matplotlib==3.7.1
+   pip install uvicorn==0.34.0
+   pip install python-dotenv==1.0.1
+   pip install groq==0.18.0
+   pip install fastapi==0.115.11
+   pip install opencv-python==4.11.0.86
+   pip install pydantic==2.10.6
    ```
-
-4. Run the server:
+4. Run API server:
+   ```bash
+   uvicorn api_call:app --reload
+   ```
+   
+5. Run the server:
    ```bash
    npm run dev
    ```
