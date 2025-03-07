@@ -75,8 +75,7 @@ async def predict(file: UploadFile = File(...)):
 
         # Send the formatted predictions to the chatbot
         chat_request = ChatRequest(message=f"""Please analyze this result, and give the analysis process of each model, whether
-                                   it is autistic or not, make sure if 2/4 models predict non autistic, then it is not autistic. Then
-                                   give me the final prediction of Autistic or Non-Autistic.\n{predictions_text}""")
+                                   it is autistic or not. Then give me the final prediction of Autistic or Non-Autistic.\n{predictions_text}""")
         chat_response = await chat(chat_request)
 
         return chat_response  # Directly return the chatbot response

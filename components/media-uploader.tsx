@@ -173,12 +173,121 @@ export function MediaUploader() {
       )}
 
       {/* Show the results from the chatbot API inside the Analysis Results box */}
-      {results && (
-        <div className="mt-10 p-10 bg-black/5 border rounded-md w-full max-w-lg">
-          <h2 className="font-semibold text-xl">Analysis Results:</h2>
-          <pre className="whitespace-pre-wrap break-words text-lg">{results}</pre>
+      {
+      results && (
+        <div className="mt-10 max-w-4xl mx-auto">
+          <div className="bg-white rounded-lg shadow-lg overflow-hidden">
+            {/* Header */}
+            <div className="bg-blue-600 px-6 py-4">
+              <h2 className="font-semibold text-xl text-white flex items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
+                  <path
+                    fillRule="evenodd"
+                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+                    clipRule="evenodd"
+                  />
+                </svg>
+                Analysis Results
+              </h2>
+            </div>
+
+            {/* Content */}
+            <div className="p-6">
+              {typeof results === "string" ? (
+                <div className="text-gray-800">
+                  {results.split("\n").map((paragraph, index) => {
+                    // Check if this is a bullet point
+                    if (paragraph.trim().startsWith("-") || paragraph.trim().startsWith("•")) {
+                      return (
+                        <div key={index} className="flex items-start mt-3">
+                          <span className="text-blue-500 mr-2">•</span>
+                          <p className="flex-1">
+                            {paragraph
+                              .replace(/^[-•]\s*/, "")
+                              .split(/(\b\d+(?:\.\d+)?%|\bautism\b|\bnon-autism\b|\basd\b)/gi)
+                              .map((part, i) =>
+                                part.match(/\d+(?:\.\d+)?%|\bautism\b|\bnon-autism\b|\basd\b/i) ? (
+                                  <span key={i} className="text-blue-700 font-semibold">
+                                    {part}
+                                  </span>
+                                ) : (
+                                  <span key={i}>{part}</span>
+                                ),
+                              )}
+                          </p>
+                        </div>
+                      )
+                    }
+
+                    // Check if this is a model prediction line
+                    if (
+                      paragraph.includes("%") &&
+                      (paragraph.includes("VGG") || paragraph.includes("Efficient") || paragraph.includes("Inception"))
+                    ) {
+                      const [model, confidenceText] = paragraph.split(":")
+                      const confidenceMatch = confidenceText.match(/(\d+(?:\.\d+)?)%/)
+                      const confidence = confidenceMatch ? Number.parseFloat(confidenceMatch[1]) : 0
+
+                      return (
+                        <div key={index} className="mt-3 bg-gray-50 p-3 rounded-md">
+                          <div className="flex justify-between items-center mb-1">
+                            <span className="font-medium">{model.trim()}</span>
+                            <span className="text-blue-600 font-semibold">{confidence}%</span>
+                          </div>
+                          <div className="w-full bg-gray-200 rounded-full h-2">
+                            <div
+                              className="bg-blue-600 h-2 rounded-full transition-all duration-500"
+                              style={{ width: `${confidence}%` }}
+                            />
+                          </div>
+                        </div>
+                      )
+                    }
+
+                    // Check if this is a heading (all caps or ends with a colon)
+                    if (paragraph.trim().toUpperCase() === paragraph.trim() || paragraph.trim().endsWith(":")) {
+                      return (
+                        <h3 key={index} className="font-semibold text-blue-900 mt-6 mb-2">
+                          {paragraph}
+                        </h3>
+                      )
+                    }
+
+                    // Regular paragraph
+                    return (
+                      <p key={index} className="mt-3 leading-relaxed">
+                        {paragraph.split(/(\b\d+(?:\.\d+)?%|\bautism\b|\bnon-autism\b|\basd\b)/gi).map((part, i) =>
+                          part.match(/\d+(?:\.\d+)?%|\bautism\b|\bnon-autism\b|\basd\b|\basd\b/i) ? (
+                            <span key={i} className="text-blue-600 font-semibold">
+                              {part}
+                            </span>
+                          ) : (
+                            <span key={i}>{part}</span>
+                          ),
+                        )}
+                      </p>
+                    )
+                  })}
+                </div>
+              ) : (
+                <pre className="whitespace-pre-wrap break-words text-gray-800 leading-relaxed">
+                  {JSON.stringify(results, null, 2)}
+                </pre>
+              )}
+            </div>
+
+            {/* Footer with disclaimer */}
+            <div className="bg-blue-50 p-4 border-t border-blue-100">
+              <p className="text-sm text-blue-800">
+                <span className="font-semibold">Important Note:</span> This analysis is based on AI models and should not be
+                considered a medical diagnosis. Please consult with a qualified healthcare professional for proper
+                evaluation.
+              </p>
+            </div>
+          </div>
         </div>
-      )}
+      )
+    }
 
       {/* Show error message if any */}
       {error && <p className="text-red-500">{error}</p>}
