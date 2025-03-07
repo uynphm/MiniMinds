@@ -1,16 +1,14 @@
 import os
 import numpy as np
-import matplotlib.pyplot as plt
-import matplotlib.image as mpimg
+import tensorflow as tf
+import gdown
 from PIL import Image
 from skimage import transform
-import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.layers import Activation, DepthwiseConv2D, Dropout
 from tensorflow.keras import backend as K
 import io
 
-# Constants
 PHOTO_SIZE = 224
 MODEL_DIR = "./models/"
 
@@ -21,7 +19,7 @@ class ModelPredictor:
 
     def _get_custom_objects(self):
         return {
-            'swish': Activation(self._swish),
+            'swish': tf.keras.activations.swish,
             'relu6': tf.keras.layers.ReLU(max_value=6),
             'DepthwiseConv2D': self.CustomDepthwiseConv2D,
             'FixedDropout': self.FixedDropout
@@ -29,16 +27,16 @@ class ModelPredictor:
 
     def _load_models(self):
         try:
+            # Download models from Google Drive
+            self._download_model_from_drive('1Kh8o2jEVseJZj4kNnIKbt0e1ipDksJBT', 'efficient_net_B0_model.h5')
+            self._download_model_from_drive('1bDyn9A9LrM7fZfYN7cabcHBfKKvTSATd', 'efficient_net_B7_model.h5')
+            self._download_model_from_drive('1LLCX4Vy2AjySOnAuyFo15-Q8YdXLj5B1', 'inception_model.h5')
+            self._download_model_from_drive('1XlQoYfPVE5YqtRaW2WZwQLF1Yp_Zqfsu', 'vgg_model50.h5')
+
             with tf.keras.utils.custom_object_scope(self.custom_objects):
                 return {
-                    'efficientnet_b0': load_model(
-                        os.path.join(MODEL_DIR, 'efficient_net_B0_model.h5'),
-                        compile=False
-                    ),
-                    'efficientnet_b7': load_model(
-                        os.path.join(MODEL_DIR, 'efficient_net_B7_model.h5'),
-                        compile=False
-                    ),
+                    'efficientnet_b0': load_model(os.path.join(MODEL_DIR, 'efficient_net_B0_model.h5'), compile=False),
+                    'efficientnet_b7': load_model(os.path.join(MODEL_DIR, 'efficient_net_B7_model.h5'), compile=False),
                     'vgg': load_model(os.path.join(MODEL_DIR, 'vgg_model50.h5')),
                     'inception': load_model(os.path.join(MODEL_DIR, 'inception_model.h5'))
                 }
@@ -46,17 +44,31 @@ class ModelPredictor:
             print(f"Error loading models: {str(e)}")
             raise
 
+    def _download_model_from_drive(self, file_id, model_filename):
+        """Download model from Google Drive using gdown"""
+        file_url = f"https://drive.google.com/uc?id={file_id}"
+        output_path = os.path.join(MODEL_DIR, model_filename)
+        
+        if not os.path.exists(MODEL_DIR):
+            os.makedirs(MODEL_DIR)
+        
+        if not os.path.exists(output_path):  # Only download if not already present
+            gdown.download(file_url, output_path, quiet=False)
+            print(f"Downloaded {model_filename}")
+        else:
+            print(f"{model_filename} already exists, skipping download.")
+
     @staticmethod
     def _swish(x):
-        return K.sigmoid(x) * x
+        return tf.keras.backend.sigmoid(x) * x
 
-    class FixedDropout(Dropout):
+    class FixedDropout(tf.keras.layers.Dropout):
         def _get_noise_shape(self, inputs):
             if self.noise_shape is None:
                 return self.noise_shape
-            return tuple([None if i is None else shape for i, shape in zip(self.noise_shape, K.shape(inputs))])
+            return tuple([None if i is None else shape for i, shape in zip(self.noise_shape, tf.keras.backend.shape(inputs))])
 
-    class CustomDepthwiseConv2D(DepthwiseConv2D):
+    class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
         def __init__(self, *args, **kwargs):
             if 'groups' in kwargs:
                 del kwargs['groups']

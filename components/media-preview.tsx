@@ -1,10 +1,9 @@
 "use client";
 
 import React from "react";
-import { X, Check, Loader2 } from "lucide-react";
+import Image from "next/image"; // Import Image from next/image
 
 interface MediaPreviewProps {
-  file: File;
   preview: string;
   uploading: boolean;
   analyzing: boolean;
@@ -21,7 +20,6 @@ interface MediaPreviewProps {
 }
 
 export function MediaPreview({
-  file,
   preview,
   uploading,
   analyzing,
@@ -34,7 +32,12 @@ export function MediaPreview({
     <div className="space-y-4">
       {/* Preview */}
       <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5">
-        <img src={preview} alt="Preview" className="object-contain w-full h-full" />
+        <Image
+          src={preview}
+          alt="Preview"
+          layout="fill" // Ensures it fills the container with correct aspect ratio
+          objectFit="contain" // Keeps the image within the container bounds
+        />
       </div>
 
       {/* Status and Controls */}

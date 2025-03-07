@@ -6,6 +6,7 @@ import { Upload, X, ImageIcon, Film, Check, Loader2 } from "lucide-react";
 import { Button } from "../components/button";
 import { Progress } from "./progress";
 import { cn } from "../lib/cn";
+import Image from "next/image"; // Import Image from next/image
 
 export function Uploader() {
   const [isDragging, setIsDragging] = useState(false);
@@ -144,7 +145,12 @@ export function Uploader() {
 
           {fileType === "image" ? (
             <div className="aspect-video bg-black flex items-center justify-center">
-              <img src={preview || "/placeholder.svg"} alt="Preview" className="max-h-full max-w-full object-contain" />
+              <Image
+                src={preview || "/placeholder.svg"}
+                alt="Preview"
+                layout="fill" // Ensures it fills the container
+                objectFit="contain" // Keeps the image within the container bounds
+              />
             </div>
           ) : (
             <div className="aspect-video bg-black">

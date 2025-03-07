@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ImageIcon } from "lucide-react";
 import { UploadBox } from "@/components/upload-box";
 import React from "react";
+import Image from "next/image"; // Import Image from next/image
 
 export function MediaUploader() {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -111,17 +112,6 @@ export function MediaUploader() {
     }
   };
 
-  const handleClear = () => {
-    setImageFile(null);
-    setVideoFile(null);
-    setImagePreview(null);
-    setVideoPreview(null);
-    setUploading(false);
-    setAnalyzing(false);
-    setResults(null);
-    setError(null);
-  };
-
   const isReadyForAnalysis = imageFile && videoFile;
 
   return (
@@ -139,7 +129,13 @@ export function MediaUploader() {
           {/* Display preview of image */}
           {imageFile && imagePreview && (
             <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5 w-40 h-40">
-              <img src={imagePreview} alt="Image Preview" className="object-cover w-full h-full" />
+              <Image 
+                src={imagePreview} 
+                alt="Image Preview" 
+                layout="fill"  // Ensures the image fills the parent container
+                objectFit="cover"  // Maintains the aspect ratio and covers the container
+                className="relative" // Add relative to ensure proper positioning of the image
+              />
             </div>
           )}
         </div>

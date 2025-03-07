@@ -1,5 +1,6 @@
-"use client";
-import React from "react";
+"use client"; 
+
+import React, { ElementType, useRef } from "react";
 import {
   motion,
   useAnimationFrame,
@@ -7,7 +8,6 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { useRef } from "react";
 import { cn } from "@/lib/cn";
 
 export function Border({
@@ -22,22 +22,20 @@ export function Border({
 }: {
   borderRadius?: string;
   children: React.ReactNode;
-  as?: any;
+  as?: ElementType; // ✅ Correct typing for JSX elements
   containerClassName?: string;
   borderClassName?: string;
   duration?: number;
   className?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }) {
   return (
     <Component
       className={cn(
-        "mt-9 bg-transparent relative text-xl  p-[2px] overflow-hidden ",
+        "mt-9 bg-transparent relative text-xl p-[2px] overflow-hidden",
         containerClassName
       )}
-      style={{
-        borderRadius: borderRadius,
-      }}
+      style={{ borderRadius }}
       {...otherProps}
     >
       <div
@@ -59,9 +57,7 @@ export function Border({
           "relative bg-slate-900/[0.8] border border-slate-800 backdrop-blur-xl text-blue-950 flex items-center justify-center w-full h-full antialiased",
           className
         )}
-        style={{
-          borderRadius: `calc(${borderRadius} * 0.96)`,
-        }}
+        style={{ borderRadius: `calc(${borderRadius} * 0.96)` }}
       >
         {children}
       </div>
@@ -80,9 +76,9 @@ export const MovingBorder = ({
   duration?: number;
   rx?: string;
   ry?: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }) => {
-  const pathRef = useRef<any>(null);
+  const pathRef = useRef<SVGRectElement | null>(null);
   const progress = useMotionValue<number>(0);
 
   useAnimationFrame((time) => {
@@ -114,14 +110,7 @@ export const MovingBorder = ({
         height="100%"
         {...otherProps}
       >
-        <rect
-          fill="none"
-          width="100%"
-          height="100%"
-          rx={rx}
-          ry={ry}
-          ref={pathRef}
-        />
+        <rect fill="none" width="100%" height="100%" rx={rx} ry={ry} ref={pathRef} />
       </svg>
       <motion.div
         style={{

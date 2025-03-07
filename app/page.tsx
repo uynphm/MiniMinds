@@ -41,7 +41,7 @@ export default function WelcomePage() {
               Welcome to MiniMinds
             </h1>
             <p className="font-semibold text-xl sm:text-lg text-black-200 max-w-2xl mx-auto font-space-grotesk">
-              Autism affects every child differently, but early detection can lead to timely intervention and better outcomes. With our system, parents can recognize early signs in toddlers and access the resources needed to support their child's development. Start detecting early - because every step matters!
+              Autism affects every child differently, but early detection can lead to timely intervention and better outcomes. With our system, parents can recognize early signs in toddlers and access the resources needed to support their child&apos;s development. Start detecting early - because every step matters!
             </p>
 
             {/* Feature Cards */}
@@ -62,7 +62,7 @@ export default function WelcomePage() {
                 </div>
                 <h3 className="text-2xl font-bold text-blue-200 mb-3">Fast Insights</h3>
                 <p className="text-white">
-                  Get quick, research-backed insights to support your child's development.
+                  Get quick, research-backed insights to support your child&apos;s development.
                 </p>
               </div>
 
