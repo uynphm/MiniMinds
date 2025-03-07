@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Early Autism Detection Web App
 
-## Getting Started
+The Early Autism Detection Web App is a cutting-edge tool designed to analyze picture of toddlers and detect early signs of autism spectrum disorder (ASD). By leveraging advanced computer vision and machine learning techniques, this app aims to provide parents, caregivers, and healthcare professionals with an accessible and early intervention tool.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Table of Contents
+- [Introduction](#introduction)
+- [Features](#features)
+- [How It Works](#how-it-works)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Introduction
+Autism spectrum disorder (ASD) is a developmental condition that affects communication, behavior, and social interaction. Early detection and intervention can significantly improve outcomes for children with ASD. This web app provides a user-friendly platform to upload and analyze pictures of toddlers, identifying potential signs of autism at an early age.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+---
 
-## Learn More
+## Features
+- **Picture Analysis**: Upload picture of toddlers to analyze their expression.
+- **Autism Detection**: Uses machine learning models to detect early signs of autism.
+- **User-Friendly Interface**: Simple and intuitive design for parents and caregivers.
+- **Secure Data Handling**: Ensures privacy and security of uploaded picture.
 
-To learn more about Next.js, take a look at the following resources:
+---
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## How It Works
+1. **Video Picture**: Users upload a picture of their toddler to the platform.
+2. **Behavior Analysis**: The app analyzes the picture using computer vision and machine learning algorithms to detect autism from the facial expression.
+3. **Results & Insights**: The app generates a report highlighting potential signs of autism and provides recommendations for next steps.
+4. **Intervention Resources**: Users are directed to resources and professionals for further evaluation and support.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+---
 
-## Deploy on Vercel
+## Installation
+To run this project locally, follow these steps:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/early-autism-detection-app.gitercel
+   ```
+2. Download these models and put them in the directory of the project.
+   https://drive.google.com/drive/folders/1FC4eB0ZukVaUfGHSsDnVBvoraCiLqfmw?usp=sharing
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+3. Install the dependencies:
+   ```bash
+   npm install
+   pip install tensorflow==2.13.0
+   pip install keras==2.13.1
+   pip install numpy==1.24.3
+   pip install pillow==10.0.0
+   pip install scikit-image==0.21.0
+   pip install matplotlib==3.7.1
+   ```
+
+4. Run the server:
+   ```bash
+   npm run dev
+   ```
+
+The application will be available on http://localhost:3000/
+
+---
+
+
+## Contributors
+Uyen Pham, Kundyz Serzhankyzy, Nguyen Pham, Kaulan Serzhanuly

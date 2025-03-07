@@ -8,7 +8,8 @@ import React from "react";
 export function MediaUploader() {
   const [imageFile, setImageFile] = useState<File | null>(null);
   const [videoFile, setVideoFile] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+
+ const [imagePreview, setImagePreview] = useState<string | null>(null);
   const [videoPreview, setVideoPreview] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [analyzing, setAnalyzing] = useState(false);
@@ -19,7 +20,8 @@ export function MediaUploader() {
   const handleFile = (file: File, type: "image" | "video") => {
     if (type === "image") {
       setImageFile(file);
-      const reader = new FileReader();
+
+    const reader = new FileReader();
       reader.onloadend = () => setImagePreview(reader.result as string);
       reader.readAsDataURL(file);
     } else if (type === "video") {
@@ -32,6 +34,7 @@ export function MediaUploader() {
 
   // Handle the video and image upload
   const handleUpload = async () => {
+
     if (!imageFile || !videoFile) return; // Ensure both are present
   
     setUploading(true);
@@ -114,8 +117,10 @@ export function MediaUploader() {
   const handleClear = () => {
     setImageFile(null);
     setVideoFile(null);
-    setImagePreview(null);
-    setVideoPreview(null);
+
+=======
+setImagePreview(null);
+    setVideoPreview(null);>>>>>>> main
     setUploading(false);
     setAnalyzing(false);
     setResults(null);
@@ -125,7 +130,8 @@ export function MediaUploader() {
   const isReadyForAnalysis = imageFile && videoFile;
 
   return (
-    <div className="flex flex-col items-center space-y-6">
+=======
+        <div className="flex flex-col items-center space-y-6">
       {/* Image and Video upload boxes side by side */}
       <div className="flex space-x-6">
         <div className="flex flex-col items-center">
@@ -171,8 +177,7 @@ export function MediaUploader() {
           {uploading || analyzing ? "Analyzing..." : "Start Analysis"}
         </button>
       )}
-
-      {/* Show the results from the chatbot API inside the Analysis Results box */}
+          {/* Show the results from the chatbot API inside the Analysis Results box */}
       {results && (
         <div className="mt-10 p-10 bg-black/5 border rounded-md w-full max-w-lg">
           <h2 className="font-semibold text-xl">Analysis Results:</h2>

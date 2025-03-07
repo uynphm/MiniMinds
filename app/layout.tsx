@@ -16,8 +16,10 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "MiniMinds",
-  description: "AI Early Autistism Detection in Toddlers",
-
+  description: "AI Early Autism Detection in Toddlers",
+  icons: {
+    icon: "/brain.png"
+  },
 };
 
 export default function RootLayout({
