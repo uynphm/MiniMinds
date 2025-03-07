@@ -38,14 +38,14 @@ Autism spectrum disorder (ASD) is a developmental condition that affects communi
 ## Installation
 To run this project locally, follow these steps:
 
-1. Clone the repository:
+1. **Clone the repository:**
    ```bash
    git clone https://github.com/uynphm/MiniMinds
    ```
-2. Download these models and put them in the project directory. ( MiniMinds/models )
+2. **Download these models and put them in the project directory. (MiniMinds/models)**
    https://drive.google.com/drive/folders/1FC4eB0ZukVaUfGHSsDnVBvoraCiLqfmw?usp=sharing
 
-3. Install the dependencies:
+3. **Install the dependencies:**
    ```bash
    npm install
    pip install tensorflow==2.13.0
@@ -61,12 +61,12 @@ To run this project locally, follow these steps:
    pip install opencv-python==4.11.0.86
    pip install pydantic==2.10.6
    ```
-4. Run API server:
+4. **Run API server:**
    ```bash
    uvicorn api_call:app --reload
    ```
    
-5. Run the server:
+5. **Run web server:**
    ```bash
    npm run dev
    ```
