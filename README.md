@@ -42,10 +42,8 @@ To run this project locally, follow these steps:
    ```bash
    git clone https://github.com/uynphm/MiniMinds
    ```
-2. **Download these models and put them in the project directory. (MiniMinds/models)**
-   https://drive.google.com/drive/folders/1FC4eB0ZukVaUfGHSsDnVBvoraCiLqfmw?usp=sharing
 
-3. **Install the dependencies:**
+2. **Install the dependencies:**
    ```bash
    npm install
    pip install tensorflow==2.13.0
@@ -61,26 +59,28 @@ To run this project locally, follow these steps:
    pip install opencv-python==4.11.0.86
    pip install pydantic==2.10.6
    ```
-4. **Run API server:**
+3. **Run API server:**
    
-   Grab the API key from Groq
-   
+   -  **Grab the API key from Groq**
+
    Create a .env file (MiniMinds/.env). Input to .env:
    ```bash
    GROQ_API_KEY = <API_KEY>
    ```
 
-   Input to terminal:
+   -  **Input to terminal:**
    ```bash
+   cd backend
    uvicorn api_call:app --reload
    ```
-6. **Run web server:**
+
+   Available on http://localhost:8000/
+4. **Run web server:**
    ```bash
    npm run dev
    ```
 
-The application will be available on http://localhost:3000/
-
+   Available on http://localhost:3000/
 ---
 
 
