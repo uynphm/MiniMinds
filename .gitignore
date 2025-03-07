@@ -44,4 +44,7 @@ next-env.d.ts
 
 # Ignore pycache
 __pycache__
-tf_env
+
+
+# Ignore my_env
+/my_env/
