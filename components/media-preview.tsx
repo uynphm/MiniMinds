@@ -1,10 +1,7 @@
 "use client";
 
-=======
+import React from "react";
 import { X, Check, Loader2 } from "lucide-react";
-import { Button } from "@/components/button";
-import { Progress } from "@/components/progress";
->>>>>>> main
 
 interface MediaPreviewProps {
   file: File;
