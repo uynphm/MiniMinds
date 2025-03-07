@@ -64,11 +64,12 @@ To run this project locally, follow these steps:
 4. **Run API server:**
    
    Grab the API key from Groq
-   Create a .env file (MiniMinds/.env)
    
+   Create a .env file (MiniMinds/.env). Input this:
    ```bash
    GROQ_API_KEY = <API_KEY>
    ```
+   
    ```bash
    uvicorn api_call:app --reload
    ```
