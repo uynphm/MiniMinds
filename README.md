@@ -46,18 +46,18 @@ To run this project locally, follow these steps:
 2. **Install the dependencies:**
    ```bash
    npm install
-   pip install tensorflow==2.13.0
-   pip install keras==2.13.1
-   pip install numpy==1.24.3
-   pip install pillow==10.0.0
-   pip install scikit-image==0.21.0
-   pip install matplotlib==3.7.1
-   pip install uvicorn==0.34.0
-   pip install python-dotenv==1.0.1
-   pip install groq==0.18.0
-   pip install fastapi==0.115.11
-   pip install opencv-python==4.11.0.86
-   pip install pydantic==2.10.6
+   pip install tensorflow
+   pip install keras
+   pip install numpy
+   pip install pillow
+   pip install scikit-image
+   pip install matplotlib
+   pip install uvicorn
+   pip install python-dotenv
+   pip install groq
+   pip install fastapi
+   pip install opencv-python
+   pip install pydantic
    pip install python-multipart
    ```
 3. **Run API server:**
