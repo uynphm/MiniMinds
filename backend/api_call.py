@@ -116,7 +116,7 @@ async def analyze_video(file: UploadFile = File(...)):
 
         # Extract frames from video
         frames = extract_frames(temp_video_path, frame_rate=1)
-
+        
         if not frames:
             raise HTTPException(status_code=400, detail="No frames extracted from the video.")
 

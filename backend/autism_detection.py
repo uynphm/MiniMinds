@@ -11,14 +11,14 @@ import io
 PHOTO_SIZE = 224
 MODEL_DIR = "./models/"
 
-# Define FixedDropout outside of ModelPredictor
+# Custom FixedDropout layer due to shape mismatch
 class FixedDropout(tf.keras.layers.Dropout):
     def _get_noise_shape(self, inputs):
         if self.noise_shape is None:
             return self.noise_shape
         return tuple([None if i is None else shape for i, shape in zip(self.noise_shape, tf.keras.backend.shape(inputs))])
 
-# Custom DepthwiseConv2D
+# Custom DepthwiseConv2D layer to remove 'groups' argument
 class CustomDepthwiseConv2D(tf.keras.layers.DepthwiseConv2D):
     def __init__(self, *args, **kwargs):
         if 'groups' in kwargs:
@@ -31,11 +31,10 @@ class ModelPredictor:
         self.models = self._load_models()
 
     def _get_custom_objects(self):
-        # Removed 'swish' to avoid JSON serialization issues.
         return {
-            'relu6': tf.keras.layers.ReLU(max_value=6),
-            'DepthwiseConv2D': CustomDepthwiseConv2D,
-            'FixedDropout': FixedDropout
+            'relu6': tf.keras.layers.ReLU(max_value=6), # custom activation
+            'DepthwiseConv2D': CustomDepthwiseConv2D, # custom layer
+            'FixedDropout': FixedDropout # custom layer
         }
 
     def _load_models(self):
@@ -78,11 +77,11 @@ class ModelPredictor:
 
     def preprocess_image(self, image):
         """Preprocess image for model prediction"""
-        if isinstance(image, str):
+        if isinstance(image, str):  # Check if image is a string
             image = Image.open(image)
-        if isinstance(image, bytes):
+        if isinstance(image, bytes):  # Check if image is bytes
             image = Image.open(io.BytesIO(image))
-        if image.mode != 'RGB':
+        if image.mode != 'RGB':  # Check if image is in RGB mode
             image = image.convert('RGB')
         np_image = np.array(image).astype('float32') / 255.0
         np_image = transform.resize(np_image, (PHOTO_SIZE, PHOTO_SIZE, 3))
