@@ -1,6 +1,6 @@
 # Early Autism Detection Web App
 
-The Early Autism Detection Web App is a cutting-edge tool designed to analyze pictures and videos of toddlers and detect early signs of autism spectrum disorder (ASD). By leveraging advanced computer vision and machine learning techniques, this app aims to provide parents, caregivers, and healthcare professionals with an accessible and early intervention tool.
+MiniMinds is a cutting-edge web app designed to analyze pictures and videos of toddlers and detect early signs of autism spectrum disorder (ASD). By leveraging advanced computer vision and machine learning techniques, this app aims to provide parents, caregivers, and healthcare professionals with an accessible and early intervention tool.
 
 ---
 
