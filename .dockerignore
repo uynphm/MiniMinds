@@ -1,0 +1,9 @@
+node_modules
+.next
+.vercel
+.env*
+npm-debug.log*
+Dockerfile
+.dockerignore
+.git
+package-lock.json
