@@ -44,11 +44,6 @@ next-env.d.ts
 # Ignore pycache
 __pycache__
 
-# Ignore some model
-efficient_net_B0_model.h5
-efficient_net_B7_model.h5
-vgg_model50.h5
-
 # Ignore /my_env
 /my_env/*
 /my_env/
