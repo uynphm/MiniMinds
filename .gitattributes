@@ -2,3 +2,5 @@ models/inception_model.h5 filter=lfs diff=lfs merge=lfs -text
 backend/models/inception_model.h5 filter=lfs diff=lfs merge=lfs -text
 vgg_model50.h5 filter=lfs diff=lfs merge=lfs -text
 backend/models/vgg_model50.h5 filter=lfs diff=lfs merge=lfs -text
+backend/models/efficient_net_B0_model.h5 filter=lfs diff=lfs merge=lfs -text
+backend/models/efficient_net_B7_model.h5 filter=lfs diff=lfs merge=lfs -text
