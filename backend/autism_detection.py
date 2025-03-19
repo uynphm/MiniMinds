@@ -1,7 +1,6 @@
 import os
 import numpy as np
 import tensorflow as tf
-import gdown
 from PIL import Image
 from skimage import transform
 from tensorflow.keras.models import load_model
@@ -9,7 +8,7 @@ from tensorflow.keras import backend as K
 import io
 
 PHOTO_SIZE = 224
-MODEL_DIR = "./models/"
+MODEL_DIR = "./models/"  # Relative path from backend/ to backend/models/
 
 # Custom FixedDropout layer due to shape mismatch
 class FixedDropout(tf.keras.layers.Dropout):
@@ -32,26 +31,20 @@ class ModelPredictor:
 
     def _get_custom_objects(self):
         return {
-            'relu6': tf.keras.layers.ReLU(max_value=6), # custom activation
-            'DepthwiseConv2D': CustomDepthwiseConv2D, # custom layer
-            'FixedDropout': FixedDropout # custom layer
+            'relu6': tf.keras.layers.ReLU(max_value=6),  # custom activation
+            'DepthwiseConv2D': CustomDepthwiseConv2D,    # custom layer
+            'FixedDropout': FixedDropout                 # custom layer
         }
 
     def _load_models(self):
         try:
-            # Download models from Google Drive
-            self._download_model_from_drive('1Kh8o2jEVseJZj4kNnIKbt0e1ipDksJBT', 'efficient_net_B0_model.h5')
-            self._download_model_from_drive('1bDyn9A9LrM7fZfYN7cabcHBfKKvTSATd', 'efficient_net_B7_model.h5')
-            self._download_model_from_drive('1LLCX4Vy2AjySOnAuyFo15-Q8YdXLj5B1', 'inception_model.h5')
-            self._download_model_from_drive('1XlQoYfPVE5YqtRaW2WZwQLF1Yp_Zqfsu', 'vgg_model50.h5')
-
             # Use custom_object_scope with our custom_objects.
             with tf.keras.utils.custom_object_scope(self.custom_objects):
                 return {
                     'efficientnet_b0': load_model(os.path.join(MODEL_DIR, 'efficient_net_B0_model.h5'),
-                                                   custom_objects=self.custom_objects, compile=False),
+                                                  custom_objects=self.custom_objects, compile=False),
                     'efficientnet_b7': load_model(os.path.join(MODEL_DIR, 'efficient_net_B7_model.h5'),
-                                                   custom_objects=self.custom_objects, compile=False),
+                                                  custom_objects=self.custom_objects, compile=False),
                     'vgg': load_model(os.path.join(MODEL_DIR, 'vgg_model50.h5'),
                                       custom_objects=self.custom_objects),
                     'inception': load_model(os.path.join(MODEL_DIR, 'inception_model.h5'),
@@ -60,20 +53,6 @@ class ModelPredictor:
         except Exception as e:
             print(f"Error loading models: {str(e)}")
             raise
-
-    def _download_model_from_drive(self, file_id, model_filename):
-        """Download model from Google Drive using gdown"""
-        file_url = f"https://drive.google.com/uc?id={file_id}"
-        output_path = os.path.join(MODEL_DIR, model_filename)
-        
-        if not os.path.exists(MODEL_DIR):
-            os.makedirs(MODEL_DIR)
-        
-        if not os.path.exists(output_path):  # Only download if not already present
-            gdown.download(file_url, output_path, quiet=False)
-            print(f"Downloaded {model_filename}")
-        else:
-            print(f"{model_filename} already exists, skipping download.")
 
     def preprocess_image(self, image):
         """Preprocess image for model prediction"""
@@ -117,3 +96,4 @@ class ModelPredictor:
             }
         except Exception as e:
             raise RuntimeError(f"Prediction error: {str(e)}")
+        
