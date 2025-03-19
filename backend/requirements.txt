@@ -1,0 +1,13 @@
+tensorflow
+keras
+numpy
+pillow
+scikit-image
+matplotlib
+uvicorn
+python-dotenv
+groq
+fastapi
+opencv-python
+pydantic
+python-multipart
