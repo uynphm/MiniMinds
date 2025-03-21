@@ -46,11 +46,11 @@ To run this project locally, follow these steps:
 2. **Build Docker images**
    ```bash
    cd backend
-   docker run -t fastapi-backend .
-   docker run -e GROQ_API_KEY=your_api_key -p 8000:8000 fastapi-backend
+   docker run -t <image-tag> .
+   docker run -e GROQ_API_KEY=your_api_key -p 8000:8000 <image-tag>
    cd ..
-   docker run -t frontend .
-   docker run -it --rm -p 3000:3000 frontend 
+   docker run -t <image-tag> .
+   docker run -it --rm -p 3000:3000 <image-tag>
    ```
    Available on http://localhost:3000/
 ---
