@@ -11,3 +11,5 @@ fastapi
 opencv-python
 pydantic
 python-multipart
+onnxruntime
+memory-profiler

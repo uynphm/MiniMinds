@@ -5,7 +5,7 @@ from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
-from autism_detection import ModelPredictor
+from use_onnx_model import ModelPredictor
 from dotenv import load_dotenv
 from groq import Groq
 import cv2
