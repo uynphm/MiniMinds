@@ -9,7 +9,6 @@ MiniMinds is a cutting-edge web app designed to analyze pictures and videos of t
 - [Features](#features)
 - [How It Works](#how-it-works)
 - [Installation](#installation)
-- [Usage](#usage)
 - [Contributing](#contributing)
 
 ---
@@ -23,7 +22,7 @@ Autism spectrum disorder (ASD) is a developmental condition that affects communi
 - **Picture and Video Analysis**: Upload a picture and a video of toddlers to analyze their expression.
 - **Autism Detection**: Uses machine learning models to detect early signs of autism.
 - **User-Friendly Interface**: Simple and intuitive design for parents and caregivers.
-- **Secure Data Handling**: Ensures privacy and security of uploaded picture.
+- **Secure Data Handling**: Ensures privacy and security of uploaded picture and video.
 
 ---
 
@@ -31,8 +30,7 @@ Autism spectrum disorder (ASD) is a developmental condition that affects communi
 1. **Video & Picture**: Users upload a picture and a video of their toddler to the platform.
 2. **Behavior Analysis**: The app analyzes the picture using computer vision and machine learning algorithms to detect autism from facial expressions.
 3. **Results & Insights**: The app generates a report highlighting potential signs of autism and provides recommendations for next steps.
-4. **Intervention Resources**: Users are directed to resources and professionals for further evaluation and support.
-
+   
 ---
 
 ## Installation
