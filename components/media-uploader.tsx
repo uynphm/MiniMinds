@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { ImageIcon } from "lucide-react";
-import { UploadBox } from "@/components/upload-box";
+import { UploadBox } from "../components/upload-box";
 import React from "react";
 import Image from "next/image"; // Import Image from next/image
 

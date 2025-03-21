@@ -1,8 +1,8 @@
-"use client";
+"use client"; 
 
 import type React from "react";
 import { useState, useRef } from "react";
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 
 interface UploadBoxProps {
   title: string;

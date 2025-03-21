@@ -8,7 +8,7 @@ import {
   useMotionValue,
   useTransform,
 } from "framer-motion";
-import { cn } from "@/lib/cn";
+import { cn } from "../lib/cn";
 
 export function Border({
   borderRadius = "1.75rem",

@@ -1,5 +1,5 @@
 import { Mail, MapPin, MessageSquare, Phone } from "lucide-react"
-import NavigationBar from "@/components/navigationbar"
+import NavigationBar from "../../components/navigationbar"
 
 export default function ContactPage() {
     return (

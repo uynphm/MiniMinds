@@ -1,8 +1,8 @@
 import Link from "next/link"
 import { ArrowRight } from 'lucide-react'
-import NavigationBar from "@/components/navigationbar";
+import NavigationBar from "../components/navigationbar";
 import { Search, Zap, Shield } from 'lucide-react';
-import { Border } from "@/components/border";
+import { Border } from "../components/border";
 
 export default function WelcomePage() {
   return (

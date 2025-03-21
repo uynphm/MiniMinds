@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
     "target": "ES2017",
     "lib": [
       "dom",
@@ -14,7 +15,7 @@
     "module": "esnext",
     "moduleResolution": "bundler",
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": true, 
     "jsx": "preserve",
     "incremental": true,
     "plugins": [

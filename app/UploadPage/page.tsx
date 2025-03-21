@@ -1,8 +1,8 @@
 "use client";
 
-import { MediaUploader } from "@/components/media-uploader";
+import { MediaUploader } from "../../components/media-uploader";
 import { motion } from "framer-motion";
-import NavigationBar from "@/components/navigationbar";
+import NavigationBar from "../../components/navigationbar"
 
 export default function AnalyzePage() {
   return (
