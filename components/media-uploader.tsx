@@ -52,11 +52,11 @@ export function MediaUploader() {
 
       // Send both requests simultaneously
       const [response_image, response_video] = await Promise.all([
-        fetch("http://localhost:8000/predict", {
+        fetch("http://test-fii8.onrender.com/predict", {
           method: "POST",
           body: formDataImage,
         }),
-        fetch("http://localhost:8000/analyze_video", {
+        fetch("http://test-fii8.onrender.com/analyze_video", {
           method: "POST",
           body: formDataVideo,
         }),
@@ -86,7 +86,7 @@ export function MediaUploader() {
       Video Analysis:
       ${videoText}`;
 
-      const response = await fetch("http://localhost:8000/api/chat", {
+      const response = await fetch("http://test-fii8.onrender.com/api/chat", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
