@@ -109,8 +109,24 @@ def extract_frames(video_path, frame_rate=1):
 @app.post("/analyze_video")
 async def analyze_video(file: UploadFile = File(...)):
     try:
+        # Get file extension from content tyoe
+        content_type = file.content_type or "video/mp4"
+        
+        extension_map = {
+            "video/mp4": ".mp4",
+            "video/quicktime": ".mov",
+            "video/mov": ".mov",
+            "video/x-matroska": ".mkv",
+            "video/x-msvideo": ".avi",  
+        }
+        
+        file_ext = extension_map.get(content_type, ".mp4")  # Default to .mp4 if unknown    
+        
+        # Log for debugging
+        print(f"Received video with content type: {content_type}, using extension: {file_ext}")
+        
         # Save video to a temporary file
-        with tempfile.NamedTemporaryFile(delete=False, suffix=".mp4") as temp_video:
+        with tempfile.NamedTemporaryFile(delete=False, suffix=file_ext) as temp_video:
             temp_video.write(await file.read())
             temp_video_path = temp_video.name
 
@@ -123,7 +139,7 @@ async def analyze_video(file: UploadFile = File(...)):
         results = []
         for i, frame in enumerate(frames[:5]):  # Limit to 5 frames for efficiency
             # Determine image's MIME type
-            mime_type = file.content_type
+            mime_type = "image/jpeg"  # Default to JPEG
             
             messages = [
                 {
