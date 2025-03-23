@@ -53,7 +53,7 @@ To run this project locally, follow these steps:
    Available on http://localhost:3000/
 ---
 
-Or watch it go live at https://miniminds.onrender.com/
+Or watch it go live at https://miniminds.onrender.com/, https://mini-minds-tau.vercel.app/
 
 ## Contributors
 Uyen Pham, Kundyz Serzhankyzy, Nguyen Pham, Kaulan Serzhanuly
