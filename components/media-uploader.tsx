@@ -1,10 +1,10 @@
 "use client";
 
 import { useState } from "react";
-import { ImageIcon } from "lucide-react";
+import { ImageIcon, VideoIcon } from "lucide-react"; // Import VideoIcon as well
 import { UploadBox } from "../components/upload-box";
 import React from "react";
-import Image from "next/image"; // Import Image from next/image
+// No need to import Image since we're handling previews in the UploadBox component
 
 export function MediaUploader() {
   const [imageFile, setImageFile] = useState<File | null>(null);
@@ -26,7 +26,7 @@ export function MediaUploader() {
     } else if (type === "video") {
       setVideoFile(file);
       // Generate a preview URL for video using URL.createObjectURL()
-      setVideoPreview(URL.createObjectURL(file));  // This creates a URL to display the video
+      setVideoPreview(URL.createObjectURL(file));
     }
     setError(null);
   };
@@ -134,35 +134,19 @@ export function MediaUploader() {
             acceptTypes="image/*"
             onFileSelected={(file) => handleFile(file, "image")}
             glowColor="#8b5cf6"
+            preview={imagePreview} // Pass the preview URL
           />
-          {/* Display preview of image */}
-          {imageFile && imagePreview && (
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5 w-40 h-40">
-              <Image
-                src={imagePreview}
-                alt="Image Preview"
-                layout="fill"  // Ensures the image fills the parent container
-                objectFit="cover"  // Maintains the aspect ratio and covers the container
-                className="relative" // Add relative to ensure proper positioning of the image
-              />
-            </div>
-          )}
         </div>
 
         <div className="flex flex-col items-center">
           <UploadBox
             title="Analyze Video"
-            icon={<ImageIcon className="h-8 w-8" />}
+            icon={<VideoIcon className="h-8 w-8" />} // Use VideoIcon for videos
             acceptTypes="video/*"
             onFileSelected={(file) => handleFile(file, "video")}
             glowColor="#8b5cf6"
+            preview={videoPreview} // Pass the preview URL
           />
-          {/* Display preview of video */}
-          {videoFile && videoPreview && (
-            <div className="relative aspect-video rounded-lg overflow-hidden bg-black/5 w-40 h-40">
-              <video src={videoPreview} controls className="object-cover w-full h-full" />
-            </div>
-          )}
         </div>
       </div>
 
@@ -230,9 +214,11 @@ export function MediaUploader() {
                         paragraph.includes("%") &&
                         (paragraph.includes("VGG") || paragraph.includes("Efficient") || paragraph.includes("Inception"))
                       ) {
-                        const [model, confidenceText] = paragraph.split(":")
-                        const confidenceMatch = confidenceText.match(/(\d+(?:\.\d+)?)%/)
-                        const confidence = confidenceMatch ? Number.parseFloat(confidenceMatch[1]) : 0
+                        const parts = paragraph.split(":")
+                        const model = parts[0]
+                        const confidenceText = parts.length > 1 ? parts.slice(1).join(":") : ""
+                        const confidenceMatch = confidenceText?.match?.(/(\d+(?:\.\d+)?)%/) || null
+                        const confidence = confidenceMatch ? parseFloat(confidenceMatch[1]) : 0
 
                         return (
                           <div key={index} className="mt-3 bg-gray-50 p-3 rounded-md">

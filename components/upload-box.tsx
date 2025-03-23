@@ -10,9 +10,17 @@ interface UploadBoxProps {
   acceptTypes: string;
   onFileSelected: (file: File) => void;
   glowColor: string;
+  preview?: string | null;
 }
 
-export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor }: UploadBoxProps) {
+export function UploadBox({ 
+  title, 
+  icon, 
+  acceptTypes, 
+  onFileSelected, 
+  glowColor, 
+  preview = null,
+}: UploadBoxProps) {
   const [isDragging, setIsDragging] = useState(false);
   const [isHovering, setIsHovering] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -48,13 +56,36 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
       onMouseEnter={() => setIsHovering(true)}
       onMouseLeave={() => setIsHovering(false)}
     >
-      {/* Dark blue background for the box */}
-      <div
-        className={cn(
-          "absolute inset-0 bg-blue-950 transition-all duration-500 ease-in-out",
-          isHovering ? "opacity-0" : "opacity-100",
-        )}
-      />
+      {/* If we have a preview, show it as a background */}
+      {preview && (
+        <div className="absolute inset-0 z-0">
+          {acceptTypes.includes('image') ? (
+            <img 
+              src={preview} 
+              alt={title} 
+              className="w-full h-full object-cover"
+            />
+          ) : (
+            <video 
+              src={preview} 
+              className="w-full h-full object-cover" 
+              autoPlay={isHovering}
+              muted 
+              loop
+            />
+          )}
+        </div>
+      )}
+
+      {/* Dark blue background for the box (only if no preview) */}
+      {!preview && (
+        <div
+          className={cn(
+            "absolute inset-0 bg-blue-950 transition-all duration-500 ease-in-out",
+            isHovering ? "opacity-0" : "opacity-100",
+          )}
+        />
+      )}
 
       {/* Soft glow around the box */}
       <div
@@ -79,17 +110,17 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         }}
       />
 
-      {/* Shadow overlay (slightly visible by default) */}
+      {/* Shadow overlay (more visible with preview) */}
       <div
         className={cn(
-          "absolute inset-0 bg-black/30 transition-opacity duration-500 ease-in-out",
-          isHovering ? "opacity-0" : "opacity-100",
+          "absolute inset-0 bg-black transition-opacity duration-500 ease-in-out z-10",
+          preview ? (isHovering ? "opacity-30" : "opacity-50") : (isHovering ? "opacity-0" : "opacity-30")
         )}
       />
 
       <div
         className={cn(
-          "relative h-full w-full flex flex-col items-center justify-center rounded-lg border border-blue-800/50 transition-all duration-500",
+          "relative h-full w-full flex flex-col items-center justify-center rounded-lg border transition-all duration-500 z-20",
           isDragging ? "border-blue-500 bg-blue-500/10" : "border-blue-800/50",
           "cursor-pointer",
         )}
@@ -101,31 +132,40 @@ export function UploadBox({ title, icon, acceptTypes, onFileSelected, glowColor 
         {/* Title (white by default, dark blue on hover) */}
         <h2
           className={cn(
-            "text-xl font-bold mb-4 transition-colors duration-500", // Smaller text (text-xl)
+            "text-xl font-bold mb-4 transition-colors duration-500 z-20", 
             isHovering ? "text-blue-600" : "text-white",
+            preview ? "bg-black/50 px-3 py-1 rounded" : ""
           )}
         >
           {title}
         </h2>
 
-        {/* Upload area (white by default, dark blue on hover) */}
-        <div
-          className={cn(
-            "w-20 h-20 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500", // Smaller upload area (w-20 h-20)
-
-            isDragging || isHovering ? "border-blue-500 text-blue-600" : "border-blue-800/50 text-white",
-          )}
-        >
-          {icon}
-          <span
+        {/* Only show upload area if no preview */}
+        {!preview && (
+          <div
             className={cn(
-              "mt-2 text-sm font-medium transition-colors duration-500", // Smaller text (text-sm)
-              isHovering ? "text-blue-600" : "text-white",
+              "w-20 h-20 flex flex-col items-center justify-center rounded-lg border-2 transition-all duration-500",
+              isDragging || isHovering ? "border-blue-500 text-blue-600" : "border-blue-800/50 text-white",
             )}
           >
-            Upload File
-          </span>
-        </div>
+            {icon}
+            <span
+              className={cn(
+                "mt-2 text-sm font-medium transition-colors duration-500",
+                isHovering ? "text-blue-600" : "text-white",
+              )}
+            >
+              Upload File
+            </span>
+          </div>
+        )}
+
+        {/* When preview exists, show a change button on hover */}
+        {preview && isHovering && (
+          <div className="absolute bottom-4 bg-white/90 text-blue-800 py-1 px-3 rounded-full shadow-lg z-30">
+            Click to change
+          </div>
+        )}
 
         <input ref={fileInputRef} type="file" accept={acceptTypes} className="hidden" onChange={handleFileInput} />
       </div>
